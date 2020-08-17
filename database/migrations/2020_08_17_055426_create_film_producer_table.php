@@ -14,10 +14,10 @@ class CreateFilmProducerTable extends Migration
     public function up()
     {
         Schema::create('film_producer', function (Blueprint $table) {
-            $table->integer('film_id')->unsigned();
-            $table->foreign('film_id')->references('id')->on('film');
-            $table->integer('producer_id')->unsigned();
-            $table->foreign('producer_id')->references('id')->on('producer');
+            $table->unsignedBigInteger('film_id');
+            $table->foreign('film_id')->references('id')->on('films');
+            $table->unsignedBigInteger('producer_id');
+            $table->foreign('producer_id')->references('id')->on('producers');
             $table->timestamps();
         });
     }

@@ -14,10 +14,10 @@ class CreateFilmUserTable extends Migration
     public function up()
     {
         Schema::create('film_user', function (Blueprint $table) {
-            $table->integer('film_id')->unsigned();
-            $table->foreign('film_id')->references('id')->on('film');
-            $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('user');
+            $table->unsignedBigInteger('film_id');
+            $table->foreign('film_id')->references('id')->on('films');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

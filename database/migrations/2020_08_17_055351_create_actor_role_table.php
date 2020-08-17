@@ -14,13 +14,12 @@ class CreateActorRoleTable extends Migration
     public function up()
     {
         Schema::create('actor_role', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('actor_id');
+            $table->unsignedBigInteger('role_id');
+            $table->foreign('actor_id')->references('id')->on('actors');
+            $table->foreign('role_id')->references('id')->on('roles');
             $table->string('name');
             $table->string('description');
-            $table->integer('actor_id')->unsigned();
-            $table->foreign('actor_id')->references('id')->on('actor');
-            $table->integer('role_id')->unsigned();
-            $table->foreign('role_id')->references('id')->on('role');
             $table->timestamps();
         });
     }
