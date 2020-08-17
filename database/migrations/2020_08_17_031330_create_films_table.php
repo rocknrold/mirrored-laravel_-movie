@@ -20,6 +20,10 @@ class CreateFilmsTable extends Migration
             $table->date('released_at');
             $table->integer('duration');
             $table->text('info');
+            $table->unsignedBigInteger('genre_id')->nullable();
+            $table->foreign('genre_id')->references('id')->on('genres');
+            $table->unsignedBigInteger('certificate_id')->nullable();
+            $table->foreign('certificate_id')->references('id')->on('certificates');
             $table->timestamps();
         });
     }
