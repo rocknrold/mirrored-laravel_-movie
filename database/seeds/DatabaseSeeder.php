@@ -11,6 +11,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UserSeeder::class);
+        $this->call([
+        	CertificateSeeder::class,
+        	RoleSeeder::class,
+        	GenreSeeder::class,
+        	ProducerSeeder::class,
+        	ActorSeeder::class,
+        	FilmSeeder::class,
+        ]);
     }
 }
+// to rollback and re-run migrations run
+// php artisan migrate:refresh --seed
