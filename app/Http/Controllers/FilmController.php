@@ -56,7 +56,7 @@ class FilmController extends Controller
 
     public function show(Film $film)
     {
-        //
+        return view('film.show',compact('film'));
     }
 
     public function edit(Film $film)

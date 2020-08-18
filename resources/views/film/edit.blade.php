@@ -41,7 +41,7 @@
                 type="datetime-local"
                 name="released_at" id="released_at"
                 class="form-control @error('released_at') is-invalid @enderror"
-                value="{{ $film->released_at }}">
+                value="{{ date('Y-m-d\TH:i:s',strtotime($film->released_at)) }}">
 
                 @error('released_at')
                     <div class="invalid-feedback">
