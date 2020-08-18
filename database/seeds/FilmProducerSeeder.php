@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class ActorSeeder extends Seeder
+class FilmProducerSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,6 @@ class ActorSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Actor::class,10)->create();
+       factory(App\FilmProducer::class,10)->create();
     }
 }

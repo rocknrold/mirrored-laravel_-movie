@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFilmUserTable extends Migration
+class CreateFilmUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateFilmUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('film_user', function (Blueprint $table) {
+        Schema::create('film_users', function (Blueprint $table) {
             $table->unsignedBigInteger('film_id');
             $table->foreign('film_id')->references('id')->on('films');
             $table->unsignedBigInteger('user_id');
