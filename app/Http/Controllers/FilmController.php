@@ -3,83 +3,100 @@
 namespace App\Http\Controllers;
 
 use App\Film;
+use View;
+use Redirect;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class FilmController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct(){
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        //
+        $films = Film::orderBy('updated_at','DESC')->paginate(10);
+        return view('film.index',compact('films'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('film.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        $rules = [
+            'name' => 'required',
+            'story' => 'required',
+            'released_at' => 'required',
+            'duration' => 'required',
+            'info' => 'required'
+        ];
+
+        $messages = [
+            'name.required' => 'Please fill in the name field'
+        ];
+
+        $validator = Validator::make($data,$rules,$messages);
+
+        if($validator->passes()){
+            $film = new Film(request(['name','story','released_at','duration','info']));
+            $film->save();
+            return redirect('/film')->with('success','Film Added Successfully');
+        }
+
+        $errors = $validator->messages();
+
+        return back()->withErrors($errors)->withInput($data);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Film  $film
-     * @return \Illuminate\Http\Response
-     */
     public function show(Film $film)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Film  $film
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Film $film)
     {
-        //
+        return view('film.edit',compact('film'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Film  $film
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Film $film)
     {
-        //
+        $data = $request->all();
+
+        $rules = [
+            'name' => 'required',
+            'story' => 'required',
+            'released_at' => 'required',
+            'duration' => 'required',
+            'info' => 'required'
+        ];
+
+        $messages = [
+            'name.required' => 'Please fill in the name field'
+        ];
+
+        $validator = Validator::make($data,$rules,$messages);
+
+        if($validator->passes()){
+            $film->update($data);
+            return redirect('/film')->with('success','Film Updated Successfully');
+        }
+
+        $errors = $validator->messages();
+
+        return back()->withErrors($errors)->withInput($data);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Film  $film
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Film $film)
     {
-        //
+        $film->delete();
+        return Redirect::route('film.index')->with('success','Film Deleted');
     }
+
+
 }
