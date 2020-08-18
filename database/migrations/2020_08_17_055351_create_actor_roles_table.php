@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateActorRoleTable extends Migration
+class CreateActorRolesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateActorRoleTable extends Migration
      */
     public function up()
     {
-        Schema::create('actor_role', function (Blueprint $table) {
+        Schema::create('actor_roles', function (Blueprint $table) {
             $table->unsignedBigInteger('actor_id');
             $table->unsignedBigInteger('role_id');
             $table->foreign('actor_id')->references('id')->on('actors');
