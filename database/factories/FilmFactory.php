@@ -17,6 +17,10 @@ $factory->define(Film::class, function (Faker $faker) {
         'story'=>$faker->overview,
         'released_at'=>now(),
         'duration'=>$faker->numberBetween($min = 60, $max = 180),
-        'info'=>$faker->saga,
+        'info'=>$faker->studio,
+        'genre_id'=> App\Genre::inRandomOrder()->first()->getKey(),
+        'certificate_id'=> App\Certificate::inRandomOrder()->first()->id,
     ];
 });
+
+

@@ -9,4 +9,14 @@ class Film extends Model
     protected $fillable = [
         'name','story','released_at','duration','info'
     ];
+
+    public function filmGenre()
+    {
+    	return $this->belongsTo(Genre::class);
+    }
+
+    public function filmCertificate()
+    {
+    	return $this->belongsTo(Certificate::class);
+    }
 }
