@@ -10,7 +10,7 @@
             <div class="form-group">
                 {!! Form::label('name', 'Title', ['class'=>'control-label']) !!}
                 {!! Form::text('name', old('name'),
-                    ['class'=>'form-control '.(old('name')? ($errors->has('name')? 'is-invalid':'is-valid'):''),'id'=>'name']) !!}
+                    ['class'=>'form-control '.(old('name')? ($errors->has('name')? 'is-invalid':'is-valid'):''),'id'=>'name','required'=>'required']) !!}
                 @error('name')
                     <div class="invalid-feedback">
                         {{$message}}
@@ -23,7 +23,7 @@
                 {!! Form::textarea('story', old('story'),
                     ['class'=>'form-control '.(old('story')? ($errors->has('story')? 'is-invalid':'is-valid'):''),'id'=>'story']) !!}
                 @error('story')
-                    <div class="">
+                    <div class="invalid-feedback">
                         {{$message}}
                     </div>
                 @enderror
@@ -43,7 +43,7 @@
             <div class="form-group">
                 {!! Form::label('duration', 'Duration (minutes)', ['class'=>'control-label']) !!}
                 {!! Form::number('duration', old('duration'),
-                    ['class'=>'form-control '.(old('name')? ($errors->has('duration')? 'is-invalid':'is-valid'):''),'id'=>'duration']) !!}
+                    ['class'=>'form-control '.(old('duration')? ($errors->has('duration')? 'is-invalid':'is-valid'):''),'id'=>'duration']) !!}
                 @error('duration')
                     <div class="invalid-feedback">
                         {{$message}}
@@ -54,7 +54,7 @@
             <div class="form-group">
                 {!! Form::label('info', 'Additional Information', ['class'=>'control-label']) !!}
                 {!! Form::text('info', old('info'),
-                    ['class'=>'form-control '.(old('name')? ($errors->has('info')? 'is-invalid':'is-valid'):''),'id'=>'info']) !!}
+                    ['class'=>'form-control '.(old('info')? ($errors->has('info')? 'is-invalid':'is-valid'):''),'id'=>'info']) !!}
                 @error('info')
                     <div class="invalid-feedback">
                         {{$message}}
@@ -63,10 +63,21 @@
             </div>
 
             <div class="form-group">
-                {!! Form::label('genre', 'Title', ['class'=>'control-label']) !!}
-                {!! Form::select('genre', $genres, null,
-                    ['class'=>'form-control '.(old('name')? ($errors->has('genre')? 'is-invalid':'is-valid'):''), 'placeholder'=>'---Select Genre---']) !!}
-                @error('name')
+                {!! Form::label('genre_id', 'Genre', ['class'=>'control-label']) !!}
+                {!! Form::select('genre_id', $genres, null,
+                    ['class'=>'form-control '.(old('genre_id')? ($errors->has('genre_id')? 'is-invalid':'is-valid'):''), 'placeholder'=>'---Select Genre---']) !!}
+                @error('genre_id')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                {!! Form::label('certificate_id', 'Certificate', ['class'=>'control-label']) !!}
+                {!! Form::select('certificate_id', $genres, null,
+                    ['class'=>'form-control '.(old('certificate_id')? ($errors->has('certificate_id')? 'is-invalid':'is-valid'):''), 'placeholder'=>'---Select Certificate---']) !!}
+                @error('certificate_id')
                     <div class="invalid-feedback">
                         {{$message}}
                     </div>
