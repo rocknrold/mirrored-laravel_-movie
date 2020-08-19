@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Film;
+use App\Genre;
 use View;
 use Redirect;
 use Illuminate\Http\Request;
@@ -22,7 +23,13 @@ class FilmController extends Controller
 
     public function create()
     {
-        return view('film.create');
+        $allGenres = Genre::all();
+
+        $genres = [];
+        foreach($allGenres as $genre){
+            $genres[$genre->id] = $genre->name;
+        }
+        return view('film.create',compact('genres'));
     }
 
     public function store(Request $request)
@@ -34,7 +41,8 @@ class FilmController extends Controller
             'story' => 'required',
             'released_at' => 'required',
             'duration' => 'required',
-            'info' => 'required'
+            'info' => 'required',
+            'genre' => 'required'
         ];
 
         $messages = [
@@ -61,7 +69,15 @@ class FilmController extends Controller
 
     public function edit(Film $film)
     {
-        return view('film.edit',compact('film'));
+        $allGenres = Genre::all();
+
+        $genres = [];
+        foreach($allGenres as $genre){
+            $genres[$genre->id] = $genre->name;
+        }
+
+        $film->released_at = date('Y-m-d\TH:i:s',strtotime($film->released_at));
+        return view('film.edit',compact('film','genres'));
     }
 
     public function update(Request $request, Film $film)
