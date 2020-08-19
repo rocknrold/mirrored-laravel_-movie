@@ -44,16 +44,15 @@ class FilmController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        // dd($data);
 
         $rules = [
-            'name' => 'min:3|max:100|required',
-            'story' => 'min:10|required',
-            'released_at' => 'date|date_format:Y-m-d\TH:i|required',
-            'duration' => 'numeric|digits:2|min:60|max:180|required',
-            'info' => 'min:3|required',
-            'genre_id' => 'numeric|exists:genres,id|required',
-            'certificate_id' => 'numeric|exists:certificates,id|required'
+            'name' => 'required|min:3|max:100',
+            'story' => 'required|min:10',
+            'released_at' => 'required|date',
+            'duration' => 'required|numeric|digits_between:2,3|min:60|max:180',
+            'info' => 'required|min:3',
+            'genre_id' => 'required|numeric|exists:genres,id',
+            'certificate_id' => 'required|numeric|exists:certificates,id'
         ];
 
         $messages = [
@@ -64,7 +63,7 @@ class FilmController extends Controller
         $validator = Validator::make($data,$rules,$messages);
 
         if($validator->passes()){
-            $film = new Film(request(['name','story','released_at','duration','info','genre_id']));
+            $film = new Film(request(['name','story','released_at','duration','info','genre_id','certificate_id']));
             $film->save();
             return redirect('/film')->with('success','Film Added Successfully');
         }
@@ -104,13 +103,13 @@ class FilmController extends Controller
         $data = $request->all();
 
         $rules = [
-            'name' => 'min:3|max:100|required',
-            'story' => 'min:10|required',
-            'released_at' => 'date|date_format:Y-m-d\TH:i|required',
-            'duration' => 'numeric|digits:2|min:60|max:180|required',
-            'info' => 'min:3|required',
-            'genre_id' => 'numeric|exists:genres,id|required',
-            'certificate_id' => 'numeric|exists:certificates,id|required'
+            'name' => 'required|min:3|max:100',
+            'story' => 'required|min:10',
+            'released_at' => 'required|date',
+            'duration' => 'required|numeric|digits_between:2,3|min:60|max:180',
+            'info' => 'required|min:3',
+            'genre_id' => 'required|numeric|exists:genres,id',
+            'certificate_id' => 'required|numeric|exists:certificates,id'
         ];
 
         $messages = [
