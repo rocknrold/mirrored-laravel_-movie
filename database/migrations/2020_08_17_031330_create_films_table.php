@@ -17,7 +17,7 @@ class CreateFilmsTable extends Migration
             $table->id();
             $table->string('name',100);
             $table->text('story');
-            $table->date('released_at');
+            $table->timestamp('released_at');
             $table->integer('duration');
             $table->text('info');
             $table->unsignedBigInteger('genre_id')->nullable();
