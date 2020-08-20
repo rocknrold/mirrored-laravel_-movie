@@ -16,8 +16,8 @@ class CreateActorRolesTable extends Migration
         Schema::create('actor_roles', function (Blueprint $table) {
             $table->unsignedBigInteger('actor_id');
             $table->unsignedBigInteger('role_id');
-            $table->foreign('actor_id')->references('id')->on('actors');
-            $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('actor_id')->references('id')->on('actors')->onDelete('cascade');
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
             $table->string('name');
             $table->string('description');
             $table->timestamps();
