@@ -31,4 +31,9 @@ class Film extends Model
     public function filmUsers(){
         return $this->hasMany(FilmUser::class);
     }
+
+    // public function filmUser(){
+    //     return $this->hasMany(FilmUser::class)
+    //                 ->where()
+    // }
 }

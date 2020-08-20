@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Film;
+use App\FilmUser;
 use View;
 use Redirect;
 use Illuminate\Http\Request;
@@ -56,7 +57,11 @@ class FilmController extends Controller
 
     public function show(Film $film)
     {
-        return view('film.show',compact('film'));
+        // dd($film->filmUsers()->with('user'));
+        // dd($film);
+        $comments = $film->filmUsers()->get();
+        // dd($comments);
+        return view('film.show',compact('film','comments'));
     }
 
     public function edit(Film $film)
