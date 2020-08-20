@@ -21,9 +21,9 @@ class CreateFilmsTable extends Migration
             $table->integer('duration');
             $table->text('info');
             $table->unsignedBigInteger('genre_id')->nullable();
-            $table->foreign('genre_id')->references('id')->on('genres');
+            $table->foreign('genre_id')->references('id')->on('genres')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('certificate_id')->nullable();
-            $table->foreign('certificate_id')->references('id')->on('certificates');
+            $table->foreign('certificate_id')->references('id')->on('certificates')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
