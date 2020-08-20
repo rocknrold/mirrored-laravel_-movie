@@ -26,3 +26,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('film', 'FilmController')->middleware('auth');
+
+Route::resource('contact','ContactController')->middleware('auth');
