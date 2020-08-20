@@ -13,4 +13,8 @@ class ActorRole extends Model
     public function role(){
         return $this->belongsTo(Role::class);
     }
+
+    public function film(){
+        return $this->belongsTo(Film::class);
+    }
 }
