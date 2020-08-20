@@ -18,10 +18,10 @@ class DatabaseSeeder extends Seeder
         	GenreSeeder::class,
         	ProducerSeeder::class,
         	ActorSeeder::class,
-            ActorRoleSeeder::class,
         	FilmSeeder::class,
             FilmProducerSeeder::class,
             FilmUserSeeder::class,
+            ActorRoleSeeder::class,
         ]);
     }
 }
