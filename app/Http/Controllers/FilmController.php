@@ -57,10 +57,7 @@ class FilmController extends Controller
 
     public function show(Film $film)
     {
-        // dd($film->filmUsers()->with('user'));
-        // dd($film);
-        $comments = $film->filmUsers()->get();
-        // dd($comments);
+        $comments = $film->filmUsers()->with('user')->get();
         return view('film.show',compact('film','comments'));
     }
 
