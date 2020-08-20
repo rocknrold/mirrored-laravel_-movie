@@ -15,9 +15,9 @@ class CreateFilmProducersTable extends Migration
     {
         Schema::create('film_producers', function (Blueprint $table) {
             $table->unsignedBigInteger('film_id');
-            $table->foreign('film_id')->references('id')->on('films');
+            $table->foreign('film_id')->references('id')->on('films')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('producer_id');
-            $table->foreign('producer_id')->references('id')->on('producers');
+            $table->foreign('producer_id')->references('id')->on('producers')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

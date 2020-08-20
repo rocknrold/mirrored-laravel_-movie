@@ -11,6 +11,6 @@ class ActorSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Actor::class,10)->create();
+        factory(App\Actor::class,100)->create();
     }
 }
