@@ -19,7 +19,7 @@ class CreateActorRolesTable extends Migration
             $table->unsignedBigInteger('film_id');
             $table->foreign('actor_id')->references('id')->on('actors')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('film_id')->references('id')->on('roles')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('film_id')->references('id')->on('films')->onDelete('cascade')->onUpdate('cascade');
 
             $table->string('name');
             $table->string('description');
