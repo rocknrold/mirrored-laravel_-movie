@@ -34,7 +34,7 @@ class FilmController extends Controller
             'story' => 'required',
             'released_at' => 'required',
             'duration' => 'required',
-            'info' => 'required |numeric'
+            'info' => 'required'
         ];
 
         $messages = [
