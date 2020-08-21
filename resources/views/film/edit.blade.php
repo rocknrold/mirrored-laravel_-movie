@@ -3,31 +3,23 @@
 @section('content')
     <div class="container">
         <h1>Edit Film</h1>
-        <form action="{{route('film.update',$film->id)}}" method="POST">
+        {!! Form::model($film, ['route'=>['film.update',$film->id]]) !!}
             @csrf
-            @method('PUT')
-              <div class="form-group">
-                <label for="name">Title</label>
-                <input
-                type="text"
-                name="name" id="name"
-                class="form-control @error('title') is-invalid @enderror"
-                value="{{ $film->name }}">
+            @method('PATCH')
 
+            <div class="form-group">
+                {!! Form::label('name', 'Title', ['class'=>'control-label']) !!}
+                {!! Form::text('name', null, ['class'=>'form-control '.($errors->has('name')? 'is-invalid':''),'id'=>'name']) !!}
                 @error('name')
                     <div class="invalid-feedback">
                         {{$message}}
                     </div>
                 @enderror
             </div>
-              <div class="form-group">
-                <label for="story">Story</label>
-                <textarea
-                type="text"
-                name="story" id="story"
-                class="form-control @error('story') is-invalid @enderror"
-                cols="30" rows="10">{{ $film->story }}</textarea>
 
+            <div class="form-group">
+                {!! Form::label('story', 'Story', ['class'=>'control-label']) !!}
+                {!! Form::textarea('story', null, ['class'=>'form-control '.($errors->has('story')? 'is-invalid':''),'id'=>'story']) !!}
                 @error('story')
                     <div class="invalid-feedback">
                         {{$message}}
@@ -35,14 +27,9 @@
                 @enderror
             </div>
 
-              <div class="form-group">
-                <label for="released_at">Release Date</label>
-                <input
-                type="datetime-local"
-                name="released_at" id="released_at"
-                class="form-control @error('released_at') is-invalid @enderror"
-                value="{{ date('Y-m-d\TH:i:s',strtotime($film->released_at)) }}">
-
+            <div class="form-group">
+                {!! Form::label('released_at', 'Release Date', ['class'=>'control-label']) !!}
+                {!! Form::datetimeLocal('released_at', null, ['class'=>'form-control '.($errors->has('released_at')? 'is-invalid':''),'id'=>'released_at']) !!}
                 @error('released_at')
                     <div class="invalid-feedback">
                         {{$message}}
@@ -50,14 +37,9 @@
                 @enderror
             </div>
 
-              <div class="form-group">
-                <label for="duration">Duration</label>
-                <input
-                type="number"
-                name="duration" id="duration"
-                class="form-control @error('duration') is-invalid @enderror"
-                value="{{ $film->duration }}">
-
+            <div class="form-group">
+                {!! Form::label('duration', 'Duration (minutes)', ['class'=>'control-label']) !!}
+                {!! Form::number('duration', null, ['class'=>'form-control '.($errors->has('duration')? 'is-invalid':''),'id'=>'duration']) !!}
                 @error('duration')
                     <div class="invalid-feedback">
                         {{$message}}
@@ -65,14 +47,9 @@
                 @enderror
             </div>
 
-              <div class="form-group">
-                <label for="info">Additional Information</label>
-                <input
-                type="text"
-                name="info" id="info"
-                class="form-control @error('info') is-invalid @enderror"
-                value="{{ $film->info }}">
-
+            <div class="form-group">
+                {!! Form::label('info', 'Additional Information', ['class'=>'control-label']) !!}
+                {!! Form::text('info', null, ['class'=>'form-control '.($errors->has('info')? 'is-invalid':''),'id'=>'info']) !!}
                 @error('info')
                     <div class="invalid-feedback">
                         {{$message}}
@@ -80,7 +57,29 @@
                 @enderror
             </div>
 
-                <button type="submit" class="btn btn-success">Submit</button>
-        </form>
+            <div class="form-group">
+                {!! Form::label('genre_id', 'Genre', ['class'=>'control-label']) !!}
+                {!! Form::select('genre_id', $genres, null,
+                    ['class'=>'form-control '.($errors->has('genre_id')? 'is-invalid':'')]) !!}
+                @error('genre_id')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                {!! Form::label('certificate_id', 'Certificate', ['class'=>'control-label']) !!}
+                {!! Form::select('certificate_id', $genres, null,
+                    ['class'=>'form-control '.($errors->has('certificate_id')? 'is-invalid':'')]) !!}
+                @error('certificate_id')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                @enderror
+            </div>
+
+            {!! Form::submit('Submit', ['class'=>'btn btn-success']) !!}
+        {!! Form::close() !!}
     </div>
 @endsection
