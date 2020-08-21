@@ -19,20 +19,22 @@ class ContactController extends Controller
 
         $rules = [
             'subject' => 'required|min:3|string',
-            'message' => 'required|min:3'
+            'message' => 'required|min:3',
+            'to' => 'required|exists:users,email'
         ];
 
         $messages = [
             'subject.required' => 'Please fill in the subject field',
-            'message.required' => 'Please fill in the message field'
+            'message.required' => 'Please fill in the message field',
+            'to.exists' => 'The email provided is not included in the registered users'
         ];
 
         $validator = Validator::make($data,$rules,$messages);
 
         if($validator->passes()){
-            Mail::to('152b8ec449-612108@inbox.mailtrap.io')
-                ->send(new ContactAdmin($request->input('subject'), $request->input('subject')));
-            return back()->with('success', 'Thank you for contact us!');
+            Mail::to($request->input('to'))
+                ->send(new ContactAdmin($request->input('subject'), $request->input('message')));
+            return back()->with('success', 'Email Successfully Sent!');
         }
 
         $errors = $validator->messages();

@@ -15,7 +15,17 @@
         {!! Form::hidden('email',Auth::user()->email, []) !!}
             <div class="form-group">
                 {!! Form::label('to', 'To', ['class'=>'control-label']) !!}
-                {!! Form::text('to', 'Admin', ['class'=>'form-control','disabled'=>'disabled']) !!}
+                @if (Auth::user()->is_admin)
+                    {!! Form::email('to', old('to'), ['class'=>'form-control '.(old('to')? ($errors->has('to')? 'is-invalid':'is-valid'):'')]) !!}
+                @else
+                    {!! Form::text('to', 'Admin', ['class'=>'form-control','disabled'=>'disabled']) !!}
+                @endif
+
+                @error('to')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                @enderror
             </div>
 
             <div class="form-group">
@@ -25,10 +35,10 @@
                     'required'=>'required']) !!}
 
                 @error('subject')
-                <div class="invalid-feedback">
-                    {{$message}}
-                </div>
-            @enderror
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                @enderror
             </div>
 
             <div class="form-group">

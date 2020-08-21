@@ -1,3 +1,7 @@
 <li class="nav-item">
-    <a class="nav-link" href="{{route('contact.index')}}">Contact Us</a>
+    {{-- @if (Auth::user()->is_admin)
+        <a class="nav-link" href="{{route('contactUser')}}">Send Email to Users</a>
+    @else
+    @endif --}}
+    <a class="nav-link" href="{{route('contact.index')}}">Contact {{Auth::user()->is_admin ? 'User':'Admin'}}</a>
 </li>
