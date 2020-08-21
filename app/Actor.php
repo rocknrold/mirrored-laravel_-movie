@@ -6,7 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Actor extends Model
 {
-    public function actorRoles(){
-        return $this->hasMany(ActorRole::class);
-    }
+
+    protected $fillable = ['name', 'note'];
+  
+//     public function actorRoles(){
+//         return $this->hasMany(ActorRole::class);
+//     }
+  
 }
