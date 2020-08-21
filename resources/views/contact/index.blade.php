@@ -18,7 +18,7 @@
                 @if (Auth::user()->is_admin)
                     {!! Form::email('to', old('to'), ['class'=>'form-control '.(old('to')? ($errors->has('to')? 'is-invalid':'is-valid'):'')]) !!}
                 @else
-                    {!! Form::text('to', 'Admin', ['class'=>'form-control','disabled'=>'disabled']) !!}
+                    {!! Form::email('to', $adminEmail, ['class'=>'form-control'.(old('to')? ($errors->has('to')? 'is-invalid':'is-valid'):'')]) !!}
                 @endif
 
                 @error('to')

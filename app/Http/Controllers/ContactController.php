@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Mail\ContactAdmin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,7 +12,8 @@ use Illuminate\Support\Facades\Mail;
 class ContactController extends Controller
 {
     public function index(){
-        return view('contact.index');
+        $adminEmail = array_values((User::select('email')->where('is_admin','=',TRUE)->get())->toArray()[0])[0];
+        return view('contact.index',compact('adminEmail'));
     }
 
     public function store(Request $request){
