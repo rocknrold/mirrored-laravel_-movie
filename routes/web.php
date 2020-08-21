@@ -29,4 +29,4 @@ Route::resource('film', 'FilmController');
 
 Route::resource('actor', 'ActorController');
 
-Route::post('filmUser', 'FilmUserController@store')->name('filmUser');
+Route::resource('filmUser', 'FilmUserController');

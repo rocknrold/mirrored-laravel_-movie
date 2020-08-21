@@ -7,6 +7,7 @@ use App\FilmUser;
 use View;
 use Redirect;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class FilmController extends Controller
@@ -58,7 +59,26 @@ class FilmController extends Controller
     public function show(Film $film)
     {
         $comments = $film->filmUsers()->with('user')->get();
-        return view('film.show',compact('film','comments'));
+
+        $hasComment = false;
+        $user_id = Auth::user()->id;
+        $rating = round($comments->avg('rating'),2);
+        $now = now('Asia/Manila');
+
+        // dd($comments->contains('user_id',Auth::user()->id));
+        // $comments = $comments->map(function ($comment){
+        //     return
+        // })
+
+        // dd($comments->avg('rating'));
+        // dd(array_filter($comments->toArray(),function($index){
+        //     return $index->user_id == Auth::user()->id;
+        // }));
+        // dd(in_array(Auth::user()->id,$comments->toArray()[0]));
+        // if ($comments->contains('user_id',Auth::user()->id)){
+        //     $hasComment = true;
+        // }
+        return view('film.show',compact('film','comments','hasComment','rating','now'));
     }
 
     public function edit(Film $film)

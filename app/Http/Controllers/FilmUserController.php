@@ -17,11 +17,13 @@ class FilmUserController extends Controller
         $data = $request->all();
 
         $rules = [
-            'comment' => 'required|string'
+            'comment' => 'required|string|min:3',
+            'rating' => 'required|numeric|min:0|max:10'
         ];
 
         $messages = [
-            'comment.required' => 'Please write your comment'
+            'comment.required' => 'Please write your comment',
+            'comment.min' => 'Your review should be at least 3 characters long'
         ];
 
         $validator = Validator::make($data,$rules,$messages);
@@ -30,7 +32,7 @@ class FilmUserController extends Controller
             $film = new FilmUser;
             $film->comment = $data['comment'];
             $film->film_id = $data['film_id'];
-            $film->rating = 0;
+            $film->rating = $data['rating'];
             $film->user_id = Auth::user()->id;
             $film->save();
             return back()->with('success','Comment added');
@@ -39,5 +41,37 @@ class FilmUserController extends Controller
         $errors = $validator->messages();
 
         return back()->withErrors($errors)->withInput($data);
+    }
+
+    public function update(Request $request, FilmUser $film){
+        $data = $request->all();
+
+        $rules = [
+            'comment' => 'required|string|min:3',
+            'rating' => 'required|numeric|min:0|max:10'
+        ];
+
+        $messages = [
+            'comment.required' => 'Please write your comment',
+            'comment.min' => 'Your review should be at least 3 characters long'
+        ];
+
+        $validator = Validator::make($data,$rules,$messages);
+
+        if($validator->passes()){
+            $film->where([['film_id','=',$data['film_id']],['user_id','=',Auth::user()->id]])
+                ->update(['comment'=>$data['comment'], 'rating'=>$data['rating']]);
+            return back()->with('success','Comment edited');
+        }
+
+        $errors = $validator->messages();
+
+        return back()->withErrors($errors)->withInput($data);
+    }
+
+    public function destroy($film){
+        $filmUser = new FilmUser;
+        $filmUser->remove($film);
+        return back()->with('success','Comment Deleted');
     }
 }
