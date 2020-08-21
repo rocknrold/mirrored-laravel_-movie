@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Actor;
+use View;
+use Redirect;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ActorController extends Controller
 {
@@ -12,9 +15,15 @@ class ActorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        //
+        $actors = Actor::orderBy('name', 'ASC')->paginate(10);
+        return view('actor\index',compact('actors'));
     }
 
     /**
@@ -24,7 +33,7 @@ class ActorController extends Controller
      */
     public function create()
     {
-        //
+        return view('actor.create');
     }
 
     /**
@@ -35,7 +44,30 @@ class ActorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        $rules = [
+            'name' => 'min:3| max:50|required|alpha',
+            'note' => 'string|max:300|required|alpha_num',
+        ];
+
+        $messages = [
+            'name.required' => 'Fill out name',
+            'name.max' => 'Maximum name limit exceeds, max of 50 characters only',
+            'note.required' => 'Fill out note',
+        ];
+
+        $validator = Validator::make($data,$rules,$messages);
+
+        if ($validator->passes()) {
+            $actor = new Actor(request(['name','note']));
+            $actor->save();
+            return Redirect::route('actor.index')->with('success', 'Actor Added Successfully');
+        }
+
+        $errors = $validator->messages();
+
+        return back()->withErrors($errors)->withInput($data);
     }
 
     /**
@@ -46,7 +78,7 @@ class ActorController extends Controller
      */
     public function show(Actor $actor)
     {
-        //
+        return view('actor.show')->with('actor',$actor);
     }
 
     /**
@@ -57,7 +89,7 @@ class ActorController extends Controller
      */
     public function edit(Actor $actor)
     {
-        //
+        return view('actor.edit')->with('actor', $actor);
     }
 
     /**
@@ -69,7 +101,29 @@ class ActorController extends Controller
      */
     public function update(Request $request, Actor $actor)
     {
-        //
+        $data = $request->all();
+
+        $rules = [
+            'name' => 'min:3| max:50|required|alpha',
+            'note' => 'string|max:300|required|alpha_num',
+        ];
+
+        $messages = [
+            'name.required' => 'Fill out name',
+            'name.max' => 'Maximum name limit exceeds, max of 50 characters only',
+            'note.required' => 'Fill out note',
+        ];
+
+        $validator = Validator::make($data,$rules,$messages);
+
+        if ($validator->passes()) {
+            $actor->update($data);
+            return Redirect::route('actor.index')->with('success', 'Actor Updated Successfully');
+        }
+
+        $errors = $validator->messages();
+
+        return back()->withErrors($errors)->withInput($data);
     }
 
     /**
@@ -80,6 +134,7 @@ class ActorController extends Controller
      */
     public function destroy(Actor $actor)
     {
-        //
+        $actor->delete();
+        return Redirect::route('actor.index')->with('success', 'Actor Deleted');
     }
 }
