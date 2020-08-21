@@ -16,7 +16,7 @@
             <div class="col">
                 <strong class="m-1 {{$hasComment ? 'text-primary':''}}">{{$comment->user->name}}</strong>
                 <small>{{ (($comment->updated_at)->diff($now)->days) < 1 ? 'today':($comment->updated_at)->diffForHumans($now) }}</small>
-                <p>{{$comment->comment}}</p>
+                <p>{{  app('profanityFilter')->replaceFullWords(false)->filter($comment->comment) }}</p>
             </div>
 
             <div class="col-sm-1-12 d-flex p-3">

@@ -22,6 +22,17 @@
                             </div>
                         </div>
                         {!! Form::textarea('comment', $comment->comment, ['class'=>'form-control','minlength'=>3,'required'=>'required']) !!}
+
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                         {!! Form::submit('Comment', ['class'=>'mt-2 form-control btn btn-success']) !!}
                     </div>
 

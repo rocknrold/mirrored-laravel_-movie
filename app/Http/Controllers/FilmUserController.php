@@ -9,24 +9,28 @@ use Illuminate\Support\Facades\Validator;
 
 class FilmUserController extends Controller
 {
+    protected $rules = [
+        'comment' => 'required|string|min:3|profanity',
+        'rating' => 'required|numeric|min:0|max:10'
+    ];
+
+    protected $messages = [
+        'comment.required' => 'Please write your comment',
+        'comment.profanity' => 'Please do not use bad word',
+        'comment.min' => 'Your review should be at least 3 characters long'
+    ];
+
     public function __construct(){
         $this->middleware('auth');
     }
 
     public function store(Request $request){
         $data = $request->all();
+        $badWords = app('profanityFilter')->filter($data['comment'],true);
 
-        $rules = [
-            'comment' => 'required|string|min:3',
-            'rating' => 'required|numeric|min:0|max:10'
-        ];
-
-        $messages = [
-            'comment.required' => 'Please write your comment',
-            'comment.min' => 'Your review should be at least 3 characters long'
-        ];
-
-        $validator = Validator::make($data,$rules,$messages);
+        $this->messages['comment.profanity'] =
+            $this->messages['comment.profanity'].(count($badWords['matched'])==1 ? '':'s').' ('.implode(',',$badWords['matched']).')';
+        $validator = Validator::make($data, $this->rules,$this->messages);
 
         if($validator->passes()){
             $film = new FilmUser;
@@ -46,17 +50,7 @@ class FilmUserController extends Controller
     public function update(Request $request, FilmUser $film){
         $data = $request->all();
 
-        $rules = [
-            'comment' => 'required|string|min:3',
-            'rating' => 'required|numeric|min:0|max:10'
-        ];
-
-        $messages = [
-            'comment.required' => 'Please write your comment',
-            'comment.min' => 'Your review should be at least 3 characters long'
-        ];
-
-        $validator = Validator::make($data,$rules,$messages);
+        $validator = Validator::make($data, $this->rules,$this->messages);
 
         if($validator->passes()){
             $film->where([['film_id','=',$data['film_id']],['user_id','=',Auth::user()->id]])
