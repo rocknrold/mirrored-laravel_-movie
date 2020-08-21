@@ -30,13 +30,13 @@
                         <td>{{ $film->story }}</td>
                         <td><a href="{{ route('film.edit', $film->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a></td>
                         <td>
-                            <form action="{{ route('film.destroy',$film->id) }}" method="POST">
+                            {!! Form::open(['route'=>['film.destroy',$film->id], 'method'=>'POST']) !!}
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                 </button>
-                            </form>
+                            {!! Form::close() !!}
                         </td>
                     </tr>
                 @endforeach
