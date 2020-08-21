@@ -48,12 +48,13 @@ class ActorController extends Controller
 
         $rules = [
             'name' => 'min:3| max:50|required|alpha',
-            'note' => 'string|size:300|required|alpha_num',
+            'note' => 'string|max:300|required|alpha_num',
         ];
 
         $messages = [
-            'name' => 'Fill out name',
-            'note' => 'Fill out note',
+            'name.required' => 'Fill out name',
+            'name.max' => 'Maximum name limit exceeds, max of 50 characters only',
+            'note.required' => 'Fill out note',
         ];
 
         $validator = Validator::make($data,$rules,$messages);
@@ -104,12 +105,13 @@ class ActorController extends Controller
 
         $rules = [
             'name' => 'min:3| max:50|required|alpha',
-            'note' => 'string|size:300|required|alpha_num',
+            'note' => 'string|max:300|required|alpha_num',
         ];
 
         $messages = [
-            'name' => 'Fill out name',
-            'note' => 'Fill out note',
+            'name.required' => 'Fill out name',
+            'name.max' => 'Maximum name limit exceeds, max of 50 characters only',
+            'note.required' => 'Fill out note',
         ];
 
         $validator = Validator::make($data,$rules,$messages);
