@@ -2,18 +2,21 @@
     {{-- Header --}}
     @slot('header')
         @component('mail::header', ['url' => config('app.url')])
+            <img src="{{asset('logo-02.jpg')}}" alt="{{config('app.name')}}">
             {{ config('app.name') }}
         @endcomponent
     @endslot
 
+    # {{$subject}}
+
     {{-- Body --}}
-    {{ $slot }}
+    {{ $message }}
 
     {{-- Subcopy --}}
-    @isset($subcopy)
+    @isset($user)
         @slot('subcopy')
             @component('mail::subcopy')
-                {{ $subcopy }}
+                {{ $user }}
             @endcomponent
         @endslot
     @endisset
