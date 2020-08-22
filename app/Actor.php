@@ -8,9 +8,9 @@ class Actor extends Model
 {
 
     protected $fillable = ['name', 'note'];
-  
-//     public function actorRoles(){
-//         return $this->hasMany(ActorRole::class);
-//     }
-  
+
+    public function actorRoles(){
+        return $this->hasMany(ActorRole::class);
+    }
+
 }

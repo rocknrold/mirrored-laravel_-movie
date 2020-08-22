@@ -11,6 +11,6 @@ $factory->define(ActorRole::class, function (Faker $faker) {
         'role_id'=> App\Role::inRandomOrder()->first()->id,
         'film_id'=> App\Film::inRandomOrder()->first()->id,
         'name'=>$faker->word,
-        'description' => $faker->text,
+        'description' => $faker->sentence,
     ];
 });

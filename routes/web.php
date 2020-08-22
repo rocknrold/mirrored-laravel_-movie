@@ -28,3 +28,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('film', 'FilmController');
 
 Route::resource('actor', 'ActorController');
+
+Route::resource('filmUser', 'FilmUserController');
