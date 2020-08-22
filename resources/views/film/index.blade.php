@@ -14,7 +14,18 @@
         <span class="m-3"> Add Film</span><i class="fa fa-plus" aria-hidden="true"></i>
     </a>
 
-    <table class="table table-striped table-inverse table-responsive">
+    @foreach ($films as $film)
+        <div class="card-columns">
+            <div class="card">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"><a href="{{ route('film.show',$film->id) }}">{{ $film->name }}</a></h5>
+                    <p class="card-text">{{ $film->story }}</p>
+                </div>
+            </div>
+        </div>
+    @endforeach
+    {{-- <table class="table table-striped table-inverse table-responsive">
         <thead class="thead-inverse">
             <tr>
                 <th>Title</th>
@@ -41,7 +52,7 @@
                     </tr>
                 @endforeach
             </tbody>
-    </table>
+    </table> --}}
     <div class="d-flex justify-content-center">
         {{ $films->links() }}
     </div>

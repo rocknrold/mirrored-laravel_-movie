@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+
 class FilmController extends Controller
 {
     public function __construct(){
@@ -54,7 +56,8 @@ class FilmController extends Controller
             'duration' => 'required|numeric|digits_between:2,3|min:60|max:180',
             'info' => 'required|min:3',
             'genre_id' => 'required|numeric|exists:genres,id',
-            'certificate_id' => 'required|numeric|exists:certificates,id'
+            'certificate_id' => 'required|numeric|exists:certificates,id',
+            'media' => 'required|file|image|dimensions:min_width=100,min_height=200'
         ];
 
         $messages = [
@@ -66,7 +69,10 @@ class FilmController extends Controller
 
         if($validator->passes()){
             $film = new Film(request(['name','story','released_at','duration','info','genre_id','certificate_id']));
+            $film->addMedia($data['media'])->toMediaCollection('movie');
             $film->save();
+            // dd($film->getKey());
+            // $film->media_id = $media->id;
             return redirect('/film')->with('success','Film Added Successfully');
         }
 
@@ -78,26 +84,22 @@ class FilmController extends Controller
     public function show(Film $film)
     {
         $comments = $film->filmUsers()->with('user')->get();
+        // $f = Film::find(33);
+        // dd((($f->getMedia('movie')->toArray()[0]))['id']);
+        // dd(Media::find(8));
+        // dd($film->getPhotoUrlAttribute);
+        $media = ($film->getMedia('movie'));
 
+        if(count($media) == 0){
+            $media = asset('logo-01.jpg');
+        } else {
+            $media = $media[0]->getUrl('thumb');
+        }
         $hasComment = false;
         $user_id = Auth::user()->id;
         $rating = round($comments->avg('rating'),2);
         $now = now('Asia/Manila');
-
-        // dd($comments->contains('user_id',Auth::user()->id));
-        // $comments = $comments->map(function ($comment){
-        //     return
-        // })
-
-        // dd($comments->avg('rating'));
-        // dd(array_filter($comments->toArray(),function($index){
-        //     return $index->user_id == Auth::user()->id;
-        // }));
-        // dd(in_array(Auth::user()->id,$comments->toArray()[0]));
-        // if ($comments->contains('user_id',Auth::user()->id)){
-        //     $hasComment = true;
-        // }
-        return view('film.show',compact('film','comments','hasComment','rating','now'));
+        return view('film.show',compact('film','comments','hasComment','rating','now','media'));
     }
 
     public function edit(Film $film)

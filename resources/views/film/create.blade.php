@@ -4,7 +4,7 @@
     <div class="container">
         <h1>Create Film</h1>
 
-        {!! Form::open(['route'=>'film.store', 'method'=>'POST']) !!}
+        {!! Form::open(['route'=>'film.store', 'method'=>'POST', 'files'=>true]) !!}
             @csrf
 
             <div class="form-group">
@@ -75,9 +75,23 @@
 
             <div class="form-group">
                 {!! Form::label('certificate_id', 'Certificate', ['class'=>'control-label']) !!}
-                {!! Form::select('certificate_id', $genres, null,
+                {!! Form::select('certificate_id', $certificates, null,
                     ['class'=>'form-control '.(old('certificate_id')? ($errors->has('certificate_id')? 'is-invalid':'is-valid'):''), 'placeholder'=>'---Select Certificate---']) !!}
                 @error('certificate_id')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                @enderror
+            </div>
+
+            <div class="form-group">
+                <div class="custom-file">
+                    {!! Form::label('media', 'Photo', ['class'=>'custom-file-label']) !!}
+                    {!! Form::file('media',
+                        ['class'=>'custom-file-input '.(old('media')? ($errors->has('media')? 'is-invalid':'is-valid'):''), 'placeholder'=>'Photo']) !!}
+
+                </div>
+                @error('media')
                     <div class="invalid-feedback">
                         {{$message}}
                     </div>
