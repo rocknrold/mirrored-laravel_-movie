@@ -83,20 +83,6 @@ class FilmController extends Controller
         $user_id = Auth::user()->id;
         $rating = round($comments->avg('rating'),2);
         $now = now('Asia/Manila');
-
-        // dd($comments->contains('user_id',Auth::user()->id));
-        // $comments = $comments->map(function ($comment){
-        //     return
-        // })
-
-        // dd($comments->avg('rating'));
-        // dd(array_filter($comments->toArray(),function($index){
-        //     return $index->user_id == Auth::user()->id;
-        // }));
-        // dd(in_array(Auth::user()->id,$comments->toArray()[0]));
-        // if ($comments->contains('user_id',Auth::user()->id)){
-        //     $hasComment = true;
-        // }
         return view('film.show',compact('film','comments','hasComment','rating','now'));
     }
 
