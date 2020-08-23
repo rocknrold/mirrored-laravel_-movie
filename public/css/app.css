@@ -10954,7 +10954,6 @@ a.text-dark:focus {
 
 body {
   display: flex;
-  min-height: 95vh;
   flex-direction: column;
   justify-content: space-between;
 }

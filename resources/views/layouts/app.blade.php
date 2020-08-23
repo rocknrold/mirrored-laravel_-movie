@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <div id="app">
+    <div id="app" class="d-flex justify-content-between flex-column vh-100">
         <nav class="navbar navbar-expand-md navbar-light bg-primary shadow-lg">
             <div class="container">
                 <a class="navbar-brand text-light" href="{{ route('film.index') }}">

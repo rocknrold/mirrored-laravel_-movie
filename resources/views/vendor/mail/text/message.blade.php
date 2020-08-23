@@ -7,16 +7,25 @@
         @endcomponent
     @endslot
 
-    # {{$subject}}
+    # {{$subject ?? ''}}
 
     {{-- Body --}}
-    {{ $message }}
+    {{ $message ?? '' }}
+    {{ $slot ?? ''}}
 
     {{-- Subcopy --}}
     @isset($user)
         @slot('subcopy')
             @component('mail::subcopy')
                 {{ $user }}
+            @endcomponent
+        @endslot
+    @endisset
+
+    @isset($subcopy)
+        @slot('subcopy')
+            @component('mail::subcopy')
+                {{ $subcopy }}
             @endcomponent
         @endslot
     @endisset
