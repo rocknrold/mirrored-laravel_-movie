@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
-    public function actorRole()
-    {
-    
+    public function actorRoles(){
+        return $this->hasMany(ActorRole::class);
     }
 }

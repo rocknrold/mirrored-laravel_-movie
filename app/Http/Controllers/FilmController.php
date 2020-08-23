@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Film;
+use App\FilmUser;
+use App\Genre;
+use App\Certificate;
 use View;
 use Redirect;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class FilmController extends Controller
@@ -22,7 +26,21 @@ class FilmController extends Controller
 
     public function create()
     {
-        return view('film.create');
+        $allGenres = Genre::all();
+        $allCertificates = Certificate::all();
+
+        $genres = [];
+        $certificates = [];
+
+        foreach($allGenres as $genre){
+            $genres[$genre->id] = $genre->name;
+        }
+
+        foreach($allCertificates as $certificate){
+            $certificates[$certificate->id] = $certificate->name;
+        }
+
+        return view('film.create',compact('genres','certificates'));
     }
 
     public function store(Request $request)
@@ -30,21 +48,24 @@ class FilmController extends Controller
         $data = $request->all();
 
         $rules = [
-            'name' => 'required',
-            'story' => 'required',
-            'released_at' => 'required',
-            'duration' => 'required',
-            'info' => 'required'
+            'name' => 'required|min:3|max:100',
+            'story' => 'required|min:10',
+            'released_at' => 'required|date',
+            'duration' => 'required|numeric|digits_between:2,3|min:60|max:180',
+            'info' => 'required|min:3',
+            'genre_id' => 'required|numeric|exists:genres,id',
+            'certificate_id' => 'required|numeric|exists:certificates,id'
         ];
 
         $messages = [
-            'name.required' => 'Please fill in the name field'
+            'name.min' => 'Film title should be at least 3 characters long.',
+            'info.min' => 'Film additional information should be at least 3 characters long.'
         ];
 
         $validator = Validator::make($data,$rules,$messages);
 
         if($validator->passes()){
-            $film = new Film(request(['name','story','released_at','duration','info']));
+            $film = new Film(request(['name','story','released_at','duration','info','genre_id','certificate_id']));
             $film->save();
             return redirect('/film')->with('success','Film Added Successfully');
         }
@@ -56,12 +77,47 @@ class FilmController extends Controller
 
     public function show(Film $film)
     {
-        return view('film.show',compact('film'));
+        $comments = $film->filmUsers()->with('user')->get();
+
+        $hasComment = false;
+        $user_id = Auth::user()->id;
+        $rating = round($comments->avg('rating'),2);
+        $now = now('Asia/Manila');
+
+        // dd($comments->contains('user_id',Auth::user()->id));
+        // $comments = $comments->map(function ($comment){
+        //     return
+        // })
+
+        // dd($comments->avg('rating'));
+        // dd(array_filter($comments->toArray(),function($index){
+        //     return $index->user_id == Auth::user()->id;
+        // }));
+        // dd(in_array(Auth::user()->id,$comments->toArray()[0]));
+        // if ($comments->contains('user_id',Auth::user()->id)){
+        //     $hasComment = true;
+        // }
+        return view('film.show',compact('film','comments','hasComment','rating','now'));
     }
 
     public function edit(Film $film)
     {
-        return view('film.edit',compact('film'));
+        $allGenres = Genre::all();
+        $allCertificates = Certificate::all();
+
+        $genres = [];
+        $certificates = [];
+
+        foreach($allGenres as $genre){
+            $genres[$genre->id] = $genre->name;
+        }
+
+        foreach($allCertificates as $certificate){
+            $certificates[$certificate->id] = $certificate->name;
+        }
+
+        $film->released_at = date('Y-m-d\TH:i:s',strtotime($film->released_at));
+        return view('film.edit',compact('film','genres','certificates'));
     }
 
     public function update(Request $request, Film $film)
@@ -69,15 +125,18 @@ class FilmController extends Controller
         $data = $request->all();
 
         $rules = [
-            'name' => 'required',
-            'story' => 'required',
-            'released_at' => 'required',
-            'duration' => 'required',
-            'info' => 'required'
+            'name' => 'required|min:3|max:100',
+            'story' => 'required|min:10',
+            'released_at' => 'required|date',
+            'duration' => 'required|numeric|digits_between:2,3|min:60|max:180',
+            'info' => 'required|min:3',
+            'genre_id' => 'required|numeric|exists:genres,id',
+            'certificate_id' => 'required|numeric|exists:certificates,id'
         ];
 
         $messages = [
-            'name.required' => 'Please fill in the name field'
+            'name.min' => 'Film title should be at least 3 characters long.',
+            'info.min' => 'Film additional information should be at least 3 characters long.'
         ];
 
         $validator = Validator::make($data,$rules,$messages);
