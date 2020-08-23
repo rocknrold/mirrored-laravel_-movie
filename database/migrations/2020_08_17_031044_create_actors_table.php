@@ -18,6 +18,7 @@ class CreateActorsTable extends Migration
             $table->string('name',45);
             $table->text('note');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

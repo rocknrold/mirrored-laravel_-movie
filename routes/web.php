@@ -29,4 +29,10 @@ Route::resource('film', 'FilmController');
 
 Route::resource('actor', 'ActorController');
 
+
+Route::middleware(['direct.access'])->group(function () {
+	Route::post('/actor/restore/{id}','ActorController@restore')->name('actor.restore');
+	Route::get('actor/restore/{id}','ActorController@restore')->name('actor.restore');
+});
+
 Route::resource('filmUser', 'FilmUserController');

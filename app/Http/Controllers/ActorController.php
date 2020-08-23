@@ -22,7 +22,7 @@ class ActorController extends Controller
 
     public function index()
     {
-        $actors = Actor::orderBy('name', 'ASC')->paginate(10);
+        $actors = Actor::orderBy('name', 'ASC')->withTrashed()->paginate(10);
         return view('actor\index',compact('actors'));
     }
 
@@ -136,5 +136,12 @@ class ActorController extends Controller
     {
         $actor->delete();
         return Redirect::route('actor.index')->with('success', 'Actor Deleted');
+    }
+
+    public function restore($id) 
+    {
+        $actor = new Actor;
+        $actor->where('id',$id)->restore();
+        return  Redirect::route('actor.index')->with('success','Actor restored successfully!');
     }
 }
