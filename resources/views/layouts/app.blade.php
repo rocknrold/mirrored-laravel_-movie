@@ -22,13 +22,13 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light bg-primary shadow-lg">
             <div class="container">
-                <a class="navbar-brand" href="{{ route('film.index') }}">
+                <a class="navbar-brand text-light" href="{{ route('film.index') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <!-- Added this line for navigation to actors -->
-                <a class="navbar-brand" href="{{ route('actor.index') }}">
+                <a class="navbar-brand  text-light" href="{{ route('actor.index') }}">
                     Actor
                 </a>
 
@@ -57,7 +57,7 @@
                         @else
                         @include('layouts.nav_menu')
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle text-info" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 

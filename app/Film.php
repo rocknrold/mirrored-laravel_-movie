@@ -49,6 +49,10 @@ class Film extends Model implements HasMedia
             ->height(262);
         $this
             ->addMediaConversion('thumb')
+            ->width(200)
+            ->height(200);
+        $this
+            ->addMediaConversion('icon')
             ->width(100)
             ->height(100);
 
