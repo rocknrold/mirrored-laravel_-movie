@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="card mb-3 mx-auto">
-            <img src="{{$media}}" class="card-img-top" alt="...">
+            <img src="{{$media}}" class="card-img-top" alt="..." width="500">
             <div class="card-body">
                 <div class="d-flex">
                     <div class="col">

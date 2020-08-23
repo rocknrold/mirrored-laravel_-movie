@@ -14,17 +14,17 @@
     <span class="m-3"> Add Film</span><i class="fa fa-plus" aria-hidden="true"></i>
 </a>
 
-<div class="row row-cols-1 row-cols-md-4 p-5">
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 p-5">
     @foreach ($films as $film)
-    <div class="col mb-5 p-5 text-success">
+    <div class="col p-5 text-success">
         <div class="card h-100">
-            @if (count($film->getMedia('movie')) == 0)
-                <a href="{{ route('film.show',$film->id) }}">
+            <a href="{{ route('film.show',$film->id) }}">
+                @if (count($film->getMedia('movie')) == 0)
                     <img src="{{asset('logo-01.jpg')}}" class="card-img-top" alt="...">
-                </a>
-            @else
-                <img src="{{$film->getMedia('movie')[0]->getUrl('thumb')}}" class="card-img-top" alt="...">
-            @endif
+                @else
+                    <img src="{{$film->getMedia('movie')[0]->getUrl('thumb')}}" class="card-img-top" alt="...">
+                @endif
+            </a>
             <div class="card-body text-info">
                 <h5 class="card-title"><a href="{{ route('film.show',$film->id) }}">{{ $film->name }}</a></h5>
                 <p class="card-text text-justify text-truncate">{{ $film->story }}</p>
@@ -34,11 +34,13 @@
                     {{\Carbon\Carbon::createFromTimeStamp(strtotime(($film->released_at)))->diffForHumans()}}
                 </div>
                 <div class="ml-auto d-flex">
-                    <a href="{{ route('film.edit', $film->id) }}" class="btn btn-secondary"><i class="fa fa-edit"></i></a>
+                    <div>
+                        <a href="{{ route('film.edit', $film->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                    </div>
                     {!! Form::open(['route'=>['film.destroy',$film->id], 'method'=>'POST']) !!}
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-light">
+                    <button type="submit" class="btn btn-danger">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                     </button>
                     {!! Form::close() !!}
