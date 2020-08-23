@@ -71,7 +71,7 @@ class FilmController extends Controller
 
         if($validator->passes()){
             $film = new Film(request(['name','story','released_at','duration','info','genre_id','certificate_id']));
-            $film->addMedia($data['media'])->toMediaCollection('movie');
+            $film->addMedia($data['media'])->toMediaCollection('movies');
             $film->save();
             return redirect('/film')->with('success','Film Added Successfully');
         }
@@ -84,7 +84,7 @@ class FilmController extends Controller
     public function show(Film $film)
     {
         $comments = $film->filmUsers()->with('user')->get();
-        $media = ($film->getMedia('movie'));
+        $media = ($film->getMedia('movies'));
 
         if(count($media) == 0){
             $media = asset('logo-01.jpg');
@@ -122,24 +122,10 @@ class FilmController extends Controller
     {
         $data = $request->all();
 
-        $rules = [
-            'name' => 'required|min:3|max:100',
-            'story' => 'required|min:10',
-            'released_at' => 'required|date',
-            'duration' => 'required|numeric|digits_between:2,3|min:60|max:180',
-            'info' => 'required|min:3',
-            'genre_id' => 'required|numeric|exists:genres,id',
-            'certificate_id' => 'required|numeric|exists:certificates,id'
-        ];
-
-        $messages = [
-            'name.min' => 'Film title should be at least 3 characters long.',
-            'info.min' => 'Film additional information should be at least 3 characters long.'
-        ];
-
-        $validator = Validator::make($data,$rules,$messages);
+        $validator = Validator::make($data,$this->rules,$this->messages);
 
         if($validator->passes()){
+            $film->addMedia($data['media'])->toMediaCollection('movies');
             $film->update($data);
             return redirect('/film')->with('success','Film Updated Successfully');
         }

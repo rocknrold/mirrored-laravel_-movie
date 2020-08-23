@@ -19,10 +19,10 @@
     <div class="col p-5 text-success">
         <div class="card h-100">
             <a href="{{ route('film.show',$film->id) }}">
-                @if (count($film->getMedia('movie')) == 0)
+                @if (count($film->getMedia('movies')) == 0)
                     <img src="{{asset('logo-01.jpg')}}" class="card-img-top" alt="...">
                 @else
-                    <img src="{{$film->getMedia('movie')[0]->getUrl('thumb')}}" class="card-img-top" alt="...">
+                    <img src="{{$film->getMedia('movies')[0]->getUrl('thumb')}}" class="card-img-top" alt="...">
                 @endif
             </a>
             <div class="card-body text-info">
@@ -35,12 +35,12 @@
                 </div>
                 <div class="ml-auto d-flex">
                     <div>
-                        <a href="{{ route('film.edit', $film->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                        <a href="{{ route('film.edit', $film->id) }}" class="btn btn-outline-warning btn-sm"><i class="fa fa-edit"></i></a>
                     </div>
                     {!! Form::open(['route'=>['film.destroy',$film->id], 'method'=>'POST']) !!}
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                     </button>
                     {!! Form::close() !!}
