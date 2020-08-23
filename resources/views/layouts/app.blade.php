@@ -18,7 +18,10 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script src="//code.jquery.com/jquery.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script> 
 </head>
 <body>
     <div id="app">
@@ -30,6 +33,10 @@
                 <!-- Added this line for navigation to actors -->
                 <a class="navbar-brand" href="{{ route('actor.index') }}">
                     Actor
+                </a>
+                <!-- Added this line for navigation to producer -->
+                <a class="navbar-brand" href="{{ route('producer.index') }}">
+                    Producer
                 </a>
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
