@@ -20,6 +20,29 @@ class ActorController extends Controller
         $this->middleware('auth');
     }
 
+
+    public function rules()
+    {
+        $rules = [
+            'name' => 'min:3| max:50|required',
+            'note' => 'string|max:300|required',
+        ];
+
+        return $rules;
+    }
+
+    public function rulesMessages()
+    {
+        $messages = [
+            'name.required' => 'Fill out name',
+            'name.max' => 'Maximum name limit exceeds, max of 50 characters only',
+            'note.required' => 'Fill out note',
+            'note.max' => 'Maximum note limit exceeds, max of 300 characters only',
+        ];
+
+        return $messages;
+    }
+
     public function index()
     {
         $actors = Actor::orderBy('name', 'ASC')->withTrashed()->paginate(10);
@@ -46,18 +69,7 @@ class ActorController extends Controller
     {
         $data = $request->all();
 
-        $rules = [
-            'name' => 'min:3| max:50|required|alpha',
-            'note' => 'string|max:300|required|alpha_num',
-        ];
-
-        $messages = [
-            'name.required' => 'Fill out name',
-            'name.max' => 'Maximum name limit exceeds, max of 50 characters only',
-            'note.required' => 'Fill out note',
-        ];
-
-        $validator = Validator::make($data,$rules,$messages);
+        $validator = Validator::make($data,$this->rules(),$this->rulesMessages());
 
         if ($validator->passes()) {
             $actor = new Actor(request(['name','note']));
@@ -103,18 +115,7 @@ class ActorController extends Controller
     {
         $data = $request->all();
 
-        $rules = [
-            'name' => 'min:3| max:50|required|alpha',
-            'note' => 'string|max:300|required|alpha_num',
-        ];
-
-        $messages = [
-            'name.required' => 'Fill out name',
-            'name.max' => 'Maximum name limit exceeds, max of 50 characters only',
-            'note.required' => 'Fill out note',
-        ];
-
-        $validator = Validator::make($data,$rules,$messages);
+        $validator = Validator::make($data,$this->rules(),$this->rulesMessages());
 
         if ($validator->passes()) {
             $actor->update($data);

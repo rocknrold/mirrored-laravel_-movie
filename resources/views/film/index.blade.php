@@ -30,9 +30,7 @@
                             <td>
                                 {!! Form::open(['route'=>['film.restore',$film->id], 'method'=>'POST']) !!}
                                     @csrf
-                                    <button type="submit" class="btn btn-info" data-toggle="tooltip" title="Click to restore film!">
-                                        <i class="fa fa-undo" aria-hidden="true"></i>
-                                    </button>
+                                    {!! Form::button('<i class="fa fa-undo"></i>',['type'=>'submit','class'=>' btn btn-info', 'data-toggle'=>'tooltip', 'title'=>'Click to restore Film!', 'aria-hidden'=>'true']) !!}
                                 {!! Form::close() !!}
                             </td>
 
@@ -44,9 +42,7 @@
                                 {!! Form::open(['route'=>['film.destroy',$film->id], 'method'=>'POST']) !!}
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger" data-toggle="tooltip" title="Delete film!">
-                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                    </button>
+                                    {!! Form::button('<i class="fa fa-trash"></i>',['type'=>'submit','class'=>' btn btn-danger', 'data-toggle'=>'tooltip', 'title'=>'Delete Film!', 'aria-hidden'=>'true']) !!}
                                 {!! Form::close() !!}
                             </td>
                         @endif
