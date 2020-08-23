@@ -36,7 +36,6 @@ Route::resource('film', 'FilmController')->middleware('auth');
 
 Route::resource('contact','ContactController')->middleware('auth');
 
-
 Route::resource('actor', 'ActorController');
 Route::middleware(['direct.access'])->group(function () {
 	Route::post('/actor/restore/{id}','ActorController@restore')->name('actor.restore');
