@@ -55,7 +55,6 @@
                                 </li>
                             @endif
                         @else
-                        @include('layouts.nav_menu')
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle text-info" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -67,10 +66,11 @@
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
+                                    <a class="dropdown-item" href="{{route('contact.index')}}">Contact {{Auth::user()->is_admin ? 'User':'Admin'}}</a>
                                     <a class="dropdown-item" href="{{ route('password.request') }}" >Reset</a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    {!! Form::open(['route'=>'logout','method'=>'POST','id'=>'logout-form','style'=>'display:none;']) !!}
                                         @csrf
-                                    </form>
+                                    {!! Form::close() !!}
                                 </div>
                             </li>
                         @endguest
