@@ -23,8 +23,8 @@ class ProducerController extends Controller
     public function rules()
     {
         $rules = [
-            'name' => 'required|alpha',
-            'email' => 'required|email:rfc,dns',
+            'name' => 'required',
+            'email' => 'required|email',
             'website' => 'required'
         ];
 
@@ -99,8 +99,6 @@ class ProducerController extends Controller
                 ]);
             }
 
-            // dd($producer_films);
-
             $filmproducer->filmProducers()->saveMany($producer_films);
 
             return redirect('/producer')->with('success','Producer Added Successfully');
@@ -167,7 +165,16 @@ class ProducerController extends Controller
                   'producer_id'=>$lastupdate_id,                   
               );   
                 DB::table('film_producers')->updateOrInsert($data);
-            }               
+            } 
+
+            // foreach ($request->prod_films as $key) {
+            //   $data = array(                 
+            //       'film_id'=>$key,
+            //       'producer_id'=>$lastupdate_id,                   
+            //   );   
+            //     $producer->filmProducers()->sync($data);
+            // }
+
 
             return redirect('/producer')->with('success','Producer Updated Successfully');
         }
