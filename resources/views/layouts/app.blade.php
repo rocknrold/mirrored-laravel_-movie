@@ -24,12 +24,8 @@
     <div id="app" class="d-flex justify-content-between flex-column vh-100">
         <nav class="navbar navbar-expand-md navbar-light bg-primary shadow-lg">
             <div class="container">
-                <a class="navbar-brand text-light" href="{{ route('film.index') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <!-- Added this line for navigation to actors -->
-                <a class="navbar-brand  text-light" href="{{ route('actor.index') }}">
-                    Actor
+                <a class="navbar-brand text-light" href="{{ route('home') }}">
+                    Dashboard
                 </a>
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -39,7 +35,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        @include('layouts.nav_menu')
                     </ul>
 
                     <!-- Right Side Of Navbar -->

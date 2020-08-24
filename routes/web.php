@@ -49,3 +49,7 @@ Route::resource('filmUser', 'FilmUserController');
 Route::resource('contact','ContactController')->middleware('auth');
 
 Route::resource('genre', 'GenreController');
+
+Route::resource('producer', 'ProducerController');
+
+Route::resource('role', 'RoleController');
