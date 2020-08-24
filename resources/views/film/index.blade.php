@@ -34,16 +34,23 @@
                     {{\Carbon\Carbon::createFromTimeStamp(strtotime(($film->released_at)))->diffForHumans()}}
                 </div>
                 <div class="ml-auto d-flex">
-                    <div>
-                        <a href="{{ route('film.edit', $film->id) }}" class="btn btn-outline-warning btn-sm"><i class="fa fa-edit"></i></a>
-                    </div>
-                    {!! Form::open(['route'=>['film.destroy',$film->id], 'method'=>'POST']) !!}
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-outline-danger btn-sm">
-                        <i class="fa fa-trash" aria-hidden="true"></i>
-                    </button>
-                    {!! Form::close() !!}
+                    @if ($film->trashed())
+                        {!! Form::model($film, ['route' => ['film.restore', $film->id], 'method'=>'POST']) !!}
+                            @csrf
+                            {!! Form::button('<i class="fa fa-undo"></i>',['type'=>'submit','class'=>' btn btn-info', 'data-toggle'=>'tooltip', 'title'=>'Click to restore film', 'aria-hidden'=>'true']) !!}
+                        {!! Form::close() !!}<td>
+                    @else
+                        <div>
+                            <a href="{{ route('film.edit', $film->id) }}" class="btn btn-outline-warning btn-sm"><i class="fa fa-edit"></i></a>
+                        </div>
+                        {!! Form::open(['route'=>['film.destroy',$film->id], 'method'=>'POST']) !!}
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </button>
+                        {!! Form::close() !!}
+                    @endif
                 </div>
             </div>
         </div>
