@@ -28,10 +28,10 @@
                 @foreach ($actors as $actor)
                     <tr>
                         <td class="w-25">
-                            @if (count($actor->getMedia('actors')) == 0)
+                            @if ($actor->photo == null)
                                 <img src="{{asset('logo-01.jpg')}}" class="card-img-top" alt="...">
                             @else
-                                <img src="{{$actor->getMedia('actors')[0]->getUrl('icon')}}" class="card-img-top" alt="...">
+                                <img src="{{$actor->actorUrlCard}}" class="card-img-top" alt="...">
                             @endif
                         </td>
                         <td><a href="{{ route('actor.show',$actor->id) }}">{{ $actor->name }}</a></td>

@@ -7,7 +7,7 @@
                 <h1>Edit Film</h1>
             </div>
             <div class="col-4">
-                @if ($film->filmUrl == null)
+                @if ($film->photo == null)
                     <img src="{{asset('logo-01.jpg')}}" class="card-img-top" alt="...">
                 @else
                     <img src="{{$film->filmUrl}}" class="card-img-top" alt="..." >

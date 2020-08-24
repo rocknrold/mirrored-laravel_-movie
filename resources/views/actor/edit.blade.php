@@ -3,7 +3,19 @@
 @section('content')
 
     <div class="container">
-        <h1>Edit actor</h1>
+        <div class="row ">
+            <div class="col-8">
+                <h1>Edit Actor</h1>
+            </div>
+            <div class="col-4">
+                @if ($actor->photo == null)
+                    <img src="{{asset('logo-01.jpg')}}" class="card-img-top" alt="...">
+                @else
+                    <img src="{{$actor->actorUrlCard}}" class="card-img-top" alt="..." >
+                @endif
+            </div>
+
+        </div>
         {!! Form::model($actor, ['route'=>['actor.update',$actor->id], 'files'=>true]) !!}
             @csrf
             @method('PUT')

@@ -22,7 +22,7 @@
                 @if ($film->photo == null)
                     <img src="{{asset('logo-01.jpg')}}" class="card-img-top" alt="...">
                 @else
-                    <img src="{{$film->filmUrl}}" class="card-img-top" alt="...">
+                    <img src="{{$film->filmUrlCard}}" class="card-img-top" alt="...">
                 @endif
             </a>
             <div class="card-body text-info">

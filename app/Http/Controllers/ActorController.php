@@ -34,7 +34,7 @@ class ActorController extends Controller
 
     public function index()
     {
-        $actors = Actor::orderBy('name', 'ASC')->paginate(10);
+        $actors = Actor::with('photo')->orderBy('updated_at', 'DESC')->paginate(10);
         return view('actor\index',compact('actors'));
     }
 
@@ -62,7 +62,9 @@ class ActorController extends Controller
 
         if ($validator->passes()) {
             $actor = new Actor(request(['name','note']));
-            $actor->addMedia($data['media'])->toMediaCollection('actors');
+            $media = $actor->addMedia($data['media'])->toMediaCollection('actors');
+            $actor->save();
+            $actor->media_id = $media->id;
             $actor->save();
             return Redirect::route('actor.index')->with('success', 'Actor Added Successfully');
         }
@@ -107,7 +109,8 @@ class ActorController extends Controller
         $validator = Validator::make($data,$this->rules,$this->messages);
 
         if ($validator->passes()) {
-            $actor->addMedia($data['media'])->toMediaCollection('actors');
+            $media = $actor->addMedia($data['media'])->toMediaCollection('actors');
+            $data['media_id'] = $media->id;
             $actor->update($data);
             return Redirect::route('actor.index')->with('success', 'Actor Updated Successfully');
         }

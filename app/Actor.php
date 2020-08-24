@@ -13,7 +13,7 @@ class Actor extends Model implements HasMedia
 
     use InteractsWithMedia;
 
-    protected $fillable = ['name', 'note'];
+    protected $fillable = ['name', 'note','media_id'];
 
     public function actorRoles(){
         return $this->hasMany(ActorRole::class);
@@ -38,6 +38,22 @@ class Actor extends Model implements HasMedia
             ->width(100)
             ->height(100);
 
+    }
+
+    public function photo(){
+        return $this->hasOne(Media::class,'id', 'media_id');
+    }
+
+    public function getActorUrlAttribute(){
+        return $this->photo->getUrl('thumb');
+    }
+
+    public function getActorUrlCardAttribute(){
+        return $this->photo->getUrl('card');
+    }
+
+    public function getActorUrlIconAttribute(){
+        return $this->photo->getUrl('icon');
     }
 
 }
