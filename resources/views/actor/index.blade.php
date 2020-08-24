@@ -17,13 +17,23 @@
     <table class="table table-striped table-inverse table-responsive">
         <thead class="thead-inverse">
             <tr>
+                <th></th>
                 <th>Name</th>
                 <th>Note</th>
+                <th>Edit</th>
+                <th>Delete</th>
             </tr>
             </thead>
             <tbody>
                 @foreach ($actors as $actor)
                     <tr>
+                        <td class="w-25">
+                            @if (count($actor->getMedia('actors')) == 0)
+                                <img src="{{asset('logo-01.jpg')}}" class="card-img-top" alt="...">
+                            @else
+                                <img src="{{$actor->getMedia('actors')[0]->getUrl('icon')}}" class="card-img-top" alt="...">
+                            @endif
+                        </td>
                         <td><a href="{{ route('actor.show',$actor->id) }}">{{ $actor->name }}</a></td>
                         <td>{{ $actor->note }}</td>
                         <td><a href="{{ route('actor.edit', $actor->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a></td>

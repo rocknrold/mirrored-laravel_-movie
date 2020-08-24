@@ -43,7 +43,7 @@ class Film extends Model implements HasMedia
         ->addMediaCollection('movies')
         ->singleFile()
         ->acceptsFile(function (File $file) {
-            return ($file->mimeType === 'image/jpeg/png') || ($file->mimeType === 'image/png');
+            return ($file->mimeType === 'image/jpeg') || ($file->mimeType === 'image/png');
         });
         $this->addMediaConversion('card')
             ->width(500)

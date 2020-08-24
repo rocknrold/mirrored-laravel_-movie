@@ -10,6 +10,18 @@ use Illuminate\Support\Facades\Validator;
 
 class ActorController extends Controller
 {
+    protected $rules = [
+        'name' => 'min:3|max:50|required',
+        'note' => 'string|max:300|required',
+        'media' => 'required|file|image|dimensions:min_width=100,min_height=200'
+    ];
+
+    protected $messages = [
+        'name.required' => 'Fill out name',
+        'name.max' => 'Maximum name limit exceeds, max of 50 characters only',
+        'note.required' => 'Fill out note',
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -46,21 +58,11 @@ class ActorController extends Controller
     {
         $data = $request->all();
 
-        $rules = [
-            'name' => 'min:3| max:50|required|alpha',
-            'note' => 'string|max:300|required|alpha_num',
-        ];
-
-        $messages = [
-            'name.required' => 'Fill out name',
-            'name.max' => 'Maximum name limit exceeds, max of 50 characters only',
-            'note.required' => 'Fill out note',
-        ];
-
-        $validator = Validator::make($data,$rules,$messages);
+        $validator = Validator::make($data,$this->rules,$this->messages);
 
         if ($validator->passes()) {
             $actor = new Actor(request(['name','note']));
+            $actor->addMedia($data['media'])->toMediaCollection('actors');
             $actor->save();
             return Redirect::route('actor.index')->with('success', 'Actor Added Successfully');
         }
@@ -102,21 +104,10 @@ class ActorController extends Controller
     public function update(Request $request, Actor $actor)
     {
         $data = $request->all();
-
-        $rules = [
-            'name' => 'min:3| max:50|required|alpha',
-            'note' => 'string|max:300|required|alpha_num',
-        ];
-
-        $messages = [
-            'name.required' => 'Fill out name',
-            'name.max' => 'Maximum name limit exceeds, max of 50 characters only',
-            'note.required' => 'Fill out note',
-        ];
-
-        $validator = Validator::make($data,$rules,$messages);
+        $validator = Validator::make($data,$this->rules,$this->messages);
 
         if ($validator->passes()) {
+            $actor->addMedia($data['media'])->toMediaCollection('actors');
             $actor->update($data);
             return Redirect::route('actor.index')->with('success', 'Actor Updated Successfully');
         }
