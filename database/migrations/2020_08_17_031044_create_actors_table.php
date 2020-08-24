@@ -19,6 +19,7 @@ class CreateActorsTable extends Migration
             $table->text('note');
             $table->unsignedBigInteger('media_id')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

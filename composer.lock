@@ -2704,7 +2704,7 @@
                 "spatie",
                 "temporary-directory"
             ],
-            "time": "2020-06-08T08:58:45+00:00"
+            "time": "2020-06-08T08:58:45+00:00
         },
         {
             "name": "swiftmailer/swiftmailer",

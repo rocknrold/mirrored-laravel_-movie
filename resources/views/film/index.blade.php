@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-@if (session('success'))
-<div class="alert alert-info" role="alert">
-    <h4 class="alert-heading"></h4>
-    <p>{{ session('success') }}</p>
-    <p class="mb-0"></p>
-</div>
-@endif
+    @if (session('success'))
+        <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading"></h4>
+            <p>{{ session('success') }}</p>
+            <p class="mb-0"></p>
+        </div>
+    @endif
 
 
 <a href="{{ route('film.create') }}" class="btn btn-primary m-3">
