@@ -36,13 +36,6 @@
                 @enderror
             </div>
 
-                    @error('to')
-                        <div class="invalid-feedback">
-                            {{$message}}
-                        </div>
-                    @enderror
-                </div>
-
                 <div class="form-group">
                     {!! Form::label('subject', 'Subject', ['class'=>'control-label']) !!}
                     {!! Form::text('subject', old('subject'),
@@ -50,12 +43,12 @@
                         'required'=>'required']) !!}
 
 
-                @error('subject')
-                    <div class="invalid-feedback">
-                        {{$message}}
-                    </div>
+                    @error('subject')
+                        <div class="invalid-feedback">
+                            {{$message}}
+                        </div>
                 @enderror
-            </div>
+                </div>
 
                 <div class="form-group">
                     {!! Form::label('message', 'Message', ['class'=>'control-label']) !!}
