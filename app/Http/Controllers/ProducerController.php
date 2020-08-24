@@ -7,12 +7,41 @@ use App\Film;
 use App\FilmProducer;
 use View;
 use Redirect;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ProducerController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    public function rules()
+    {
+        $rules = [
+            'name' => 'required|alpha',
+            'email' => 'required|email:rfc,dns',
+            'website' => 'required'
+        ];
+
+        return $rules;
+    }
+
+    public function ruleMessages()
+    {
+        $messages = [
+            'name.required' => 'Name cannot be empty',
+            'email.required' => 'Email cannot be empty',
+            'website.required' => 'Website cannot be empty',
+        ];
+
+        return $messages;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -52,19 +81,7 @@ class ProducerController extends Controller
     {
         $data = $request->all();
 
-        $rules = [
-            'name' => 'required|alpha',
-            'email' => 'required|email:rfc,dns',
-            'website' => 'required'
-        ];
-
-        $messages = [
-            'name.required' => 'Name cannot be empty',
-            'email.required' => 'Email cannot be empty',
-            'website.required' => 'Website cannot be empty',
-        ];
-
-        $validator = Validator::make($data,$rules,$messages);
+        $validator = Validator::make($data,$this->rules(),$this->ruleMessages());
 
         if($validator->passes()){
             $producer = new Producer(request(['name','email','website']));
@@ -82,6 +99,7 @@ class ProducerController extends Controller
                 ]);
             }
 
+            // dd($producer_films);
 
             $filmproducer->filmProducers()->saveMany($producer_films);
 
@@ -96,16 +114,12 @@ class ProducerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Producer  $producer
-     * @return \Illuminate\Http\Response
+     // * @param  \App\Producer  $producer
+     // * @return \Illuminate\Http\Response
      */
     public function show(Producer $producer)
     {
-        $producer_films = Producer::with(['filmProducers','films'])->get();
-        // dd($producer_films);
-        foreach ($producer_films as $key => $value) {
-            
-        }
+        $producer_films = $producer->filmProducers()->with(['film'])->get();
         return view('producer.show',compact('producer','producer_films'));
     }
 
@@ -117,7 +131,15 @@ class ProducerController extends Controller
      */
     public function edit(Producer $producer)
     {
-        //
+        $filmlist = Film::all();
+
+        $films = [];
+
+        foreach ($filmlist as $film) {
+            $films[$film->id] = $film->name;
+        }
+
+        return view('producer.edit', compact('producer','films'));
     }
 
     /**
@@ -129,7 +151,30 @@ class ProducerController extends Controller
      */
     public function update(Request $request, Producer $producer)
     {
-        //
+        $data = $request->all();
+
+        $validator = Validator::make($data,$this->rules(),$this->ruleMessages());
+
+        if($validator->passes()){
+            $producer->update($data);
+            $lastupdate_id = $producer->id;
+
+            $producer_films = [];
+
+            foreach ($request->prod_films as $key) {
+              $data = array(                 
+                  'film_id'=>$key,
+                  'producer_id'=>$lastupdate_id,                   
+              );   
+                DB::table('film_producers')->updateOrInsert($data);
+            }               
+
+            return redirect('/producer')->with('success','Producer Updated Successfully');
+        }
+
+        $errors = $validator->messages();
+
+        return back()->withErrors($errors)->withInput($data);
     }
 
     /**
@@ -140,6 +185,7 @@ class ProducerController extends Controller
      */
     public function destroy(Producer $producer)
     {
-        //
+        $producer->delete();
+        return Redirect::route('producer.index')->with('success','Producer Deleted');
     }
 }
