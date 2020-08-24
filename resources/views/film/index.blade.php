@@ -19,10 +19,10 @@
     <div class="col p-5 text-success">
         <div class="card h-100">
             <a href="{{ route('film.show',$film->id) }}">
-                @if (count($film->getMedia('movies')) == 0)
+                @if ($film->photo == null)
                     <img src="{{asset('logo-01.jpg')}}" class="card-img-top" alt="...">
                 @else
-                    <img src="{{$film->getMedia('movies')[0]->getUrl('thumb')}}" class="card-img-top" alt="...">
+                    <img src="{{$film->filmUrl}}" class="card-img-top" alt="...">
                 @endif
             </a>
             <div class="card-body text-info">

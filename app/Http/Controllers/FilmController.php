@@ -40,7 +40,7 @@ class FilmController extends Controller
 
     public function index()
     {
-        $films = Film::orderBy('updated_at','DESC')->paginate(10);
+        $films = Film::with('photo')->orderBy('updated_at','DESC')->paginate(10);
         return view('film.index',compact('films'));
     }
 
@@ -71,7 +71,9 @@ class FilmController extends Controller
 
         if($validator->passes()){
             $film = new Film(request(['name','story','released_at','duration','info','genre_id','certificate_id']));
-            $film->addMedia($data['media'])->toMediaCollection('movies');
+            $media = $film->addMedia($data['media'])->toMediaCollection('movies');
+            $film->save();
+            $film->media_id = $media->id;
             $film->save();
             return redirect('/film')->with('success','Film Added Successfully');
         }
@@ -83,14 +85,14 @@ class FilmController extends Controller
 
     public function show(Film $film)
     {
-        $comments = $film->filmUsers()->with('user')->get();
-        $media = ($film->getMedia('movies'));
 
-        if(count($media) == 0){
+        $comments = $film->filmUsers()->with(['user','photo'])->get();
+        $media = $film->filmUrl;
+
+        if($media == null){
             $media = asset('logo-01.jpg');
-        } else {
-            $media = $media[0]->getUrl('card');
         }
+
         $hasComment = false;
         $user_id = Auth::user()->id;
         $rating = round($comments->avg('rating'),2);

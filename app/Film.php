@@ -63,12 +63,7 @@ class Film extends Model implements HasMedia
         return $this->hasOne(Media::class,'id', 'media_id');
     }
 
-    public function getPhotoUrlAttribute(){
+    public function getFilmUrlAttribute(){
         return $this->photo->getUrl('thumb');
     }
-
-    // public function filmUser(){
-        //     return $this->hasMany(FilmUser::class)
-        //                 ->where()
-        // }
-    }
+}

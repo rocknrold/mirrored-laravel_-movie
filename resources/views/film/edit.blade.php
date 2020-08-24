@@ -7,10 +7,10 @@
                 <h1>Edit Film</h1>
             </div>
             <div class="col-4">
-                @if (count($film->getMedia('movies')) == 0)
+                @if ($film->filmUrl == null)
                     <img src="{{asset('logo-01.jpg')}}" class="card-img-top" alt="...">
                 @else
-                    <img src="{{$film->getMedia('movies')[0]->getUrl('thumb')}}" class="card-img-top" alt="..." >
+                    <img src="{{$film->filmUrl}}" class="card-img-top" alt="..." >
                 @endif
             </div>
 
