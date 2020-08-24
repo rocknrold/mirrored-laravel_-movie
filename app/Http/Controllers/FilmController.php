@@ -87,10 +87,10 @@ class FilmController extends Controller
     {
 
         $comments = $film->filmUsers()->with(['user','photo'])->get();
-        $media = $film->filmUrl;
+        $media = asset('logo-01.jpg');
 
-        if($media == null){
-            $media = asset('logo-01.jpg');
+        if(!$film->photo == null){
+            $media = $film->filmUrl;
         }
 
         $hasComment = false;
@@ -127,7 +127,8 @@ class FilmController extends Controller
         $validator = Validator::make($data,$this->rules,$this->messages);
 
         if($validator->passes()){
-            $film->addMedia($data['media'])->toMediaCollection('movies');
+            $media = $film->addMedia($data['media'])->toMediaCollection('movies');
+            $data['media_id'] = $media->id;
             $film->update($data);
             return redirect('/film')->with('success','Film Updated Successfully');
         }

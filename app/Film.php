@@ -13,7 +13,7 @@ class Film extends Model implements HasMedia
     use InteractsWithMedia;
 
     protected $fillable = [
-        'name','story','released_at','duration','info','genre_id','certificate_id'
+        'name','story','released_at','duration','info','genre_id','certificate_id','media_id'
     ];
 
     public function genre()
@@ -65,5 +65,13 @@ class Film extends Model implements HasMedia
 
     public function getFilmUrlAttribute(){
         return $this->photo->getUrl('thumb');
+    }
+
+    public function getFilmUrlCardAttribute(){
+        return $this->photo->getUrl('card');
+    }
+
+    public function getFilmUrlIconAttribute(){
+        return $this->photo->getUrl('icon');
     }
 }
