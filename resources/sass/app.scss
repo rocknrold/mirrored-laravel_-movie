@@ -9,7 +9,10 @@
 
 body {
 	display: flex;
-	min-height: 95vh;
 	flex-direction: column;
 	justify-content: space-between;
+}
+
+.nav-link {
+	color: $light;
 }
