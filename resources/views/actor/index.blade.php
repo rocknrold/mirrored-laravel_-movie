@@ -17,13 +17,23 @@
     <table class="table table-striped table-inverse table-responsive">
         <thead class="thead-inverse">
             <tr>
+                <th></th>
                 <th>Name</th>
                 <th>Note</th>
+                <th>Edit</th>
+                <th>Delete</th>
             </tr>
             </thead>
             <tbody>
                 @foreach ($actors as $actor)
                     <tr>
+                        <td class="w-25">
+                            @if ($actor->photo == null)
+                                <img src="{{asset('logo-01.jpg')}}" class="card-img-top" alt="...">
+                            @else
+                                <img src="{{$actor->actorUrlCard}}" class="card-img-top" alt="...">
+                            @endif
+                        </td>
                         @if($actor->trashed())
                             <td data-toggle="tooltip" title="This actor is removed.">{{ $actor->name }}</td>
                             <td>{{ $actor->note }}</td>

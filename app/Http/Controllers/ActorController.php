@@ -10,6 +10,18 @@ use Illuminate\Support\Facades\Validator;
 
 class ActorController extends Controller
 {
+    protected $rules = [
+        'name' => 'min:3|max:50|required',
+        'note' => 'string|max:300|required',
+        'media' => 'required|file|image|dimensions:min_width=100,min_height=200'
+    ];
+
+    protected $messages = [
+        'name.required' => 'Fill out name',
+        'name.max' => 'Maximum name limit exceeds, max of 50 characters only',
+        'note.required' => 'Fill out note',
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -45,7 +57,7 @@ class ActorController extends Controller
 
     public function index()
     {
-        $actors = Actor::orderBy('name', 'ASC')->withTrashed()->paginate(10);
+        $actors = Actor::with('photo')->orderBy('updated_at', 'DESC')->withTrashed()->paginate(10);
         return view('actor\index',compact('actors'));
     }
 
@@ -68,11 +80,14 @@ class ActorController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-
-        $validator = Validator::make($data,$this->rules(),$this->rulesMessages());
+      
+        $validator = Validator::make($data,$this->rules,$this->messages);
 
         if ($validator->passes()) {
             $actor = new Actor(request(['name','note']));
+            $media = $actor->addMedia($data['media'])->toMediaCollection('actors');
+            $actor->save();
+            $actor->media_id = $media->id;
             $actor->save();
             return Redirect::route('actor.index')->with('success', 'Actor Added Successfully');
         }
@@ -114,10 +129,12 @@ class ActorController extends Controller
     public function update(Request $request, Actor $actor)
     {
         $data = $request->all();
-
-        $validator = Validator::make($data,$this->rules(),$this->rulesMessages());
+      
+        $validator = Validator::make($data,$this->rules,$this->messages);
 
         if ($validator->passes()) {
+            $media = $actor->addMedia($data['media'])->toMediaCollection('actors');
+            $data['media_id'] = $media->id;
             $actor->update($data);
             return Redirect::route('actor.index')->with('success', 'Actor Updated Successfully');
         }

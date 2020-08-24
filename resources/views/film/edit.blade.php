@@ -2,8 +2,20 @@
 
 @section('content')
     <div class="container">
-        <h1>Edit Film</h1>
-        {!! Form::model($film, ['route'=>['film.update',$film->id]]) !!}
+        <div class="row ">
+            <div class="col-8">
+                <h1>Edit Film</h1>
+            </div>
+            <div class="col-4">
+                @if ($film->photo == null)
+                    <img src="{{asset('logo-01.jpg')}}" class="card-img-top" alt="...">
+                @else
+                    <img src="{{$film->filmUrl}}" class="card-img-top" alt="..." >
+                @endif
+            </div>
+
+        </div>
+        {!! Form::model($film, ['route'=>['film.update',$film->id], 'files'=>true]) !!}
             @csrf
             @method('PATCH')
 
@@ -77,6 +89,20 @@
                         {{$message}}
                     </div>
                 @enderror
+            </div>
+
+            <div class="form-group">
+                <div class="custom-file">
+                    {!! Form::file('media',
+                    ['class'=>'custom-file-input '.($errors->has('media')? 'is-invalid':'')]) !!}
+                    {!! Form::label('media', 'Photo', ['class'=>'custom-file-label']) !!}
+
+                    @error('media')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
             </div>
 
             {!! Form::submit('Submit', ['class'=>'btn btn-success']) !!}

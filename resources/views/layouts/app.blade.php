@@ -21,14 +21,14 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+    <div id="app" class="d-flex justify-content-between flex-column vh-100">
+        <nav class="navbar navbar-expand-md navbar-light bg-primary shadow-lg">
             <div class="container">
-                <a class="navbar-brand" href="{{ route('film.index') }}">
+                <a class="navbar-brand text-light" href="{{ route('film.index') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <!-- Added this line for navigation to actors -->
-                <a class="navbar-brand" href="{{ route('actor.index') }}">
+                <a class="navbar-brand  text-light" href="{{ route('actor.index') }}">
                     Actor
                 </a>
 
@@ -47,16 +47,16 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <a class="nav-link text-light" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link text-light" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
                             @endif
                         @else
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle text-info" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
