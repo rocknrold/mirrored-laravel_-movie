@@ -17,16 +17,24 @@
                 </div>
             @endif
 
-            {!! Form::open(['routes'=>'contact.store', 'method'=>'POST']) !!}
-            @csrf
-            {!! Form::hidden('email',Auth::user()->email, []) !!}
-                <div class="form-group">
-                    {!! Form::label('to', 'To', ['class'=>'control-label']) !!}
-                    @if (Auth::user()->is_admin)
-                        {!! Form::email('to', old('to'), ['class'=>'form-control '.(old('to')? ($errors->has('to')? 'is-invalid':'is-valid'):'')]) !!}
-                    @else
-                        {!! Form::email('to', $adminEmail, ['class'=>'form-control'.(old('to')? ($errors->has('to')? 'is-invalid':'is-valid'):'')]) !!}
-                    @endif
+
+        {!! Form::open(['routes'=>'contact.store', 'method'=>'POST']) !!}
+        @csrf
+        {!! Form::hidden('email',Auth::user()->email, []) !!}
+            <div class="form-group">
+                {!! Form::label('to', 'To', ['class'=>'control-label']) !!}
+                @if (Auth::user()->is_admin)
+                    {!! Form::email('to', old('to'), ['class'=>'form-control '.(old('to')? ($errors->has('to')? 'is-invalid':'is-valid'):'')]) !!}
+                @else
+                    {!! Form::email('to', $adminEmail, ['class'=>'form-control'.(old('to')? ($errors->has('to')? 'is-invalid':'is-valid'):'')]) !!}
+                @endif
+
+                @error('to')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                @enderror
+            </div>
 
                     @error('to')
                         <div class="invalid-feedback">
@@ -41,12 +49,13 @@
                         ['class'=>'form-control '.(old('subject')? ($errors->has('subject')? 'is-invalid':'is-valid'):''),
                         'required'=>'required']) !!}
 
-                    @error('subject')
-                        <div class="invalid-feedback">
-                            {{$message}}
-                        </div>
-                    @enderror
-                </div>
+
+                @error('subject')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                @enderror
+            </div>
 
                 <div class="form-group">
                     {!! Form::label('message', 'Message', ['class'=>'control-label']) !!}
