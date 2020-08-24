@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Mail\ContactAdmin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,7 +12,8 @@ use Illuminate\Support\Facades\Mail;
 class ContactController extends Controller
 {
     public function index(){
-        return view('contact.index');
+        $adminEmail = array_values((User::select('email')->where('is_admin','=',TRUE)->get())->toArray()[0])[0];
+        return view('contact.index',compact('adminEmail'));
     }
 
     public function store(Request $request){
@@ -19,20 +21,22 @@ class ContactController extends Controller
 
         $rules = [
             'subject' => 'required|min:3|string',
-            'message' => 'required|min:3'
+            'message' => 'required|min:3',
+            'to' => 'required|exists:users,email'
         ];
 
         $messages = [
             'subject.required' => 'Please fill in the subject field',
-            'message.required' => 'Please fill in the message field'
+            'message.required' => 'Please fill in the message field',
+            'to.exists' => 'The email provided is not included in the registered users'
         ];
 
         $validator = Validator::make($data,$rules,$messages);
 
         if($validator->passes()){
-            Mail::to('152b8ec449-612108@inbox.mailtrap.io')
-                ->send(new ContactAdmin($request->input('subject'), $request->input('subject')));
-            return back()->with('success', 'Thank you for contact us!');
+            Mail::to($request->input('to'))
+                ->send(new ContactAdmin($request->input('subject'), $request->input('message')));
+            return back()->with('success', 'Email Successfully Sent!');
         }
 
         $errors = $validator->messages();
@@ -40,3 +44,4 @@ class ContactController extends Controller
         return back()->withErrors($errors)->withInput($data);
     }
 }
+
