@@ -43,3 +43,5 @@ Route::middleware(['direct.access'])->group(function () {
 });
 
 Route::resource('filmUser', 'FilmUserController');
+
+Route::resource('genre', 'GenreController');
