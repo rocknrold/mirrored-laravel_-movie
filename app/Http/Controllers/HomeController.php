@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Film;
+use App\Actor;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +25,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $films = Film::with('photo')->orderBy('updated_at','DESC')->withTrashed()->paginate(10);
+        $actors = Actor::with('photo')->orderBy('updated_at', 'DESC')->withTrashed()->paginate(10);
+        return view('home', compact('films','actors'));
     }
 }
