@@ -33,7 +33,7 @@ class ContactAdmin extends Mailable
     {
         // dd($this->data);
         return $this->from(Auth::user()->email)
-                ->markdown('contact.body')
+                ->markdown('vendor.mail.text.message')
                 ->with([
                     'subject' => $this->subject,
                     'message' => $this->message,

@@ -8,17 +8,16 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
+                    {!! Form::open(['route'=>'register','method'=>'POST']) !!}
                         @csrf
 
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
-
+                            {!! Form::label('name', 'Name', ['class' => 'col-md-4 col-form-label text-md-right']) !!}
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                {!! Form::text('name', old('name'), ['class'=>'form-control','required'=>'required','autocomplete'=>'name','autofocus'=>'autofocus']) !!}
 
                                 @error('name')
-                                    <span class="invalid-feedback" role="alert">
+                                    <span class="alert-danger" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
@@ -26,13 +25,13 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                            {!! Form::label('email', 'E-mail Address', ['class' => 'col-md-4 col-form-label text-md-right']) !!}
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                                {!! Form::email('email', old('email'), ['class'=>'form-control', 'required'=>'required', 'autocomplete'=>'email', 'autofocus'=>'autofocus']) !!}
 
                                 @error('email')
-                                    <span class="invalid-feedback" role="alert">
+                                    <span class="alert-danger" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
@@ -40,13 +39,13 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                            {!! Form::label('password', 'Password', ['class'=>'col-md-4 col-form-label text-md-right']) !!}
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                                {!! Form::password('password', ['class' => 'form-control', 'required'=>'required', 'autocomplete'=>'new-password']) !!}
 
                                 @error('password')
-                                    <span class="invalid-feedback" role="alert">
+                                    <span class="alert-danger" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
@@ -54,18 +53,17 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+                            {!! Form::label('password-confirm', 'Confirm Password', ['class'=>'col-md-4 col-form-label text-md-right']) !!}
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                {!! Form::password('password_confirmation',
+                                    ['class' => 'form-control','id'=>'password-confirm', 'required'=>'required', 'autocomplete'=>'current-password']) !!}
                             </div>
                         </div>
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
-                                </button>
+                                {!! Form::submit('Register', ['class' => 'btn btn-primary']) !!}
                             </div>
                         </div>
                     </form>

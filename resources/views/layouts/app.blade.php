@@ -24,15 +24,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script> 
 </head>
 <body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+    <div id="app" class="d-flex justify-content-between flex-column vh-100">
+        <nav class="navbar navbar-expand-md navbar-light bg-primary shadow-lg">
             <div class="container">
-                <a class="navbar-brand" href="{{ route('film.index') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <!-- Added this line for navigation to actors -->
-                <a class="navbar-brand" href="{{ route('actor.index') }}">
-                    Actor
+                <a class="navbar-brand text-light" href="{{ route('home') }}">
+                    Dashboard
                 </a>
                 <!-- Added this line for navigation to producer -->
                 <a class="navbar-brand" href="{{ route('producer.index') }}">
@@ -46,7 +42,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        @include('layouts.nav_menu')
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -54,17 +50,16 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <a class="nav-link text-light" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link text-light" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
                             @endif
                         @else
-                        @include('layouts.nav_menu')
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle text-info" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
@@ -74,10 +69,11 @@
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
+                                    <a class="dropdown-item" href="{{route('contact.index')}}">Contact {{Auth::user()->is_admin ? 'User':'Admin'}}</a>
                                     <a class="dropdown-item" href="{{ route('password.request') }}" >Reset</a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    {!! Form::open(['route'=>'logout','method'=>'POST','id'=>'logout-form','style'=>'display:none;']) !!}
                                         @csrf
-                                    </form>
+                                    {!! Form::close() !!}
                                 </div>
                             </li>
                         @endguest

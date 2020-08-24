@@ -8,17 +8,14 @@
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
+                    {!! Form::open(['route'=>'login','method'=>'POST']) !!}
                         @csrf
-
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
+                            {!! Form::label('email', 'E-mail Address', ['class' => 'col-md-4 col-form-label text-md-right']) !!}
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
+                                {!! Form::email('email', old('email'), ['class'=>'form-control', 'required'=>'required', 'autocomplete'=>'email', 'autofocus'=>'autofocus']) !!}
                                 @error('email')
-                                    <span class="invalid-feedback" role="alert">
+                                    <span class="alert-danger" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
@@ -26,13 +23,11 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
+                            {!! Form::label('password', 'Password', ['class'=>'col-md-4 col-form-label text-md-right']) !!}
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
+                                {!! Form::password('password', ['class' => 'form-control', 'required'=>'required', 'autocomplete'=>'current-password']) !!}
                                 @error('password')
-                                    <span class="invalid-feedback" role="alert">
+                                    <span class="alert-danger" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
@@ -42,20 +37,15 @@
                         <div class="form-group row">
                             <div class="col-md-6 offset-md-4">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
+                                    {!! Form::checkbox('remember', old('remember'), null, ['class' => 'form-check-input']) !!}
+                                    {!! Form::label('remember', 'Remember Me', ['class' => 'form-check-label']) !!}
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
+                                {!! Form::submit('Login', ['class' => 'btn btn-primary']) !!}
 
                                 @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
@@ -64,7 +54,7 @@
                                 @endif
                             </div>
                         </div>
-                    </form>
+                    {!! Form::close() !!}
                 </div>
             </div>
         </div>

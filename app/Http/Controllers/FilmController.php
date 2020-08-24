@@ -12,15 +12,35 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+
 class FilmController extends Controller
 {
+    protected $rules = [
+        'name' => 'required|min:3|max:100',
+        'story' => 'required|min:10',
+        'released_at' => 'required|date',
+        'duration' => 'required|numeric|digits_between:2,3|min:60|max:180',
+        'info' => 'required|min:3',
+        'genre_id' => 'required|numeric|exists:genres,id',
+        'certificate_id' => 'required|numeric|exists:certificates,id',
+        'media' => 'required|file|image|dimensions:min_width=100,min_height=200'
+    ];
+
+    protected $messages = [
+        'name.min' => 'Film title should be at least 3 characters long.',
+        'info.min' => 'Film additional information should be at least 3 characters long.',
+        'genre.required' => 'Please choose which genre this film belongs',
+        'certificate.required' => 'Please choose which certificate this film belongs'
+    ];
+
     public function __construct(){
         $this->middleware('auth');
     }
 
     public function index()
     {
-        $films = Film::orderBy('updated_at','DESC')->paginate(10);
+        $films = Film::with('photo')->orderBy('updated_at','DESC')->withTrashed()->paginate(10);
         return view('film.index',compact('films'));
     }
 
@@ -47,25 +67,13 @@ class FilmController extends Controller
     {
         $data = $request->all();
 
-        $rules = [
-            'name' => 'required|min:3|max:100',
-            'story' => 'required|min:10',
-            'released_at' => 'required|date',
-            'duration' => 'required|numeric|digits_between:2,3|min:60|max:180',
-            'info' => 'required|min:3',
-            'genre_id' => 'required|numeric|exists:genres,id',
-            'certificate_id' => 'required|numeric|exists:certificates,id'
-        ];
-
-        $messages = [
-            'name.min' => 'Film title should be at least 3 characters long.',
-            'info.min' => 'Film additional information should be at least 3 characters long.'
-        ];
-
-        $validator = Validator::make($data,$rules,$messages);
+        $validator = Validator::make($data,$this->rules,$this->messages);
 
         if($validator->passes()){
             $film = new Film(request(['name','story','released_at','duration','info','genre_id','certificate_id']));
+            $media = $film->addMedia($data['media'])->toMediaCollection('movies');
+            $film->save();
+            $film->media_id = $media->id;
             $film->save();
             return redirect('/film')->with('success','Film Added Successfully');
         }
@@ -78,26 +86,18 @@ class FilmController extends Controller
     public function show(Film $film)
     {
         $comments = $film->filmUsers()->with('user')->get();
+        $media = asset('logo-01.jpg');
+
+        // dd($film);
+        if(!$film->photo == null){
+            $media = $film->filmUrl;
+        }
 
         $hasComment = false;
         $user_id = Auth::user()->id;
         $rating = round($comments->avg('rating'),2);
         $now = now('Asia/Manila');
-
-        // dd($comments->contains('user_id',Auth::user()->id));
-        // $comments = $comments->map(function ($comment){
-        //     return
-        // })
-
-        // dd($comments->avg('rating'));
-        // dd(array_filter($comments->toArray(),function($index){
-        //     return $index->user_id == Auth::user()->id;
-        // }));
-        // dd(in_array(Auth::user()->id,$comments->toArray()[0]));
-        // if ($comments->contains('user_id',Auth::user()->id)){
-        //     $hasComment = true;
-        // }
-        return view('film.show',compact('film','comments','hasComment','rating','now'));
+        return view('film.show',compact('film','comments','hasComment','rating','now','media'));
     }
 
     public function edit(Film $film)
@@ -124,24 +124,11 @@ class FilmController extends Controller
     {
         $data = $request->all();
 
-        $rules = [
-            'name' => 'required|min:3|max:100',
-            'story' => 'required|min:10',
-            'released_at' => 'required|date',
-            'duration' => 'required|numeric|digits_between:2,3|min:60|max:180',
-            'info' => 'required|min:3',
-            'genre_id' => 'required|numeric|exists:genres,id',
-            'certificate_id' => 'required|numeric|exists:certificates,id'
-        ];
-
-        $messages = [
-            'name.min' => 'Film title should be at least 3 characters long.',
-            'info.min' => 'Film additional information should be at least 3 characters long.'
-        ];
-
-        $validator = Validator::make($data,$rules,$messages);
+        $validator = Validator::make($data,$this->rules,$this->messages);
 
         if($validator->passes()){
+            $media = $film->addMedia($data['media'])->toMediaCollection('movies');
+            $data['media_id'] = $media->id;
             $film->update($data);
             return redirect('/film')->with('success','Film Updated Successfully');
         }
@@ -157,5 +144,10 @@ class FilmController extends Controller
         return Redirect::route('film.index')->with('success','Film Deleted');
     }
 
-
+    public function restore($id)
+    {
+        $film = new Film;
+        $film->where('id',$id)->restore();
+        return Redirect::route('film.index')->with('success','Film Restored');
+    }
 }
