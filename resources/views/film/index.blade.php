@@ -18,7 +18,10 @@
     @foreach ($films as $film)
     <div class="col p-5 text-success">
         <div class="card h-100">
-            <a href="{{ route('film.show',$film->id) }}">
+            @php
+                $route = $film->trashed()? 'film.index':'film.show';
+            @endphp
+            <a href="{{ route($route,$film->id) }}">
                 @if ($film->photo == null)
                     <img src="{{asset('logo-01.jpg')}}" class="card-img-top" alt="...">
                 @else
@@ -26,19 +29,19 @@
                 @endif
             </a>
             <div class="card-body text-info">
-                <h5 class="card-title"><a href="{{ route('film.show',$film->id) }}">{{ $film->name }}</a></h5>
+                <h5 class="card-title"><a href="{{ route($route,$film->id) }}">{{ $film->name }}</a></h5>
                 <p class="card-text text-justify text-truncate">{{ $film->story }}</p>
             </div>
             <div class="card-footer d-flex">
                 <div class="">
-                    {{\Carbon\Carbon::createFromTimeStamp(strtotime(($film->released_at)))->diffForHumans()}}
+                    {{Carbon\Carbon::createFromTimeStamp(strtotime(($film->released_at)))->diffForHumans()}}
                 </div>
                 <div class="ml-auto d-flex">
                     @if ($film->trashed())
                         {!! Form::model($film, ['route' => ['film.restore', $film->id], 'method'=>'POST']) !!}
                             @csrf
                             {!! Form::button('<i class="fa fa-undo"></i>',['type'=>'submit','class'=>' btn btn-info', 'data-toggle'=>'tooltip', 'title'=>'Click to restore film', 'aria-hidden'=>'true']) !!}
-                        {!! Form::close() !!}<td>
+                        {!! Form::close() !!}
                     @else
                         <div>
                             <a href="{{ route('film.edit', $film->id) }}" class="btn btn-outline-warning btn-sm"><i class="fa fa-edit"></i></a>

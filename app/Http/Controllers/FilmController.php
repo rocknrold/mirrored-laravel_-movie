@@ -85,10 +85,10 @@ class FilmController extends Controller
 
     public function show(Film $film)
     {
-
-        $comments = $film->filmUsers()->with(['user','photo'])->get();
+        $comments = $film->filmUsers()->with('user')->get();
         $media = asset('logo-01.jpg');
 
+        // dd($film);
         if(!$film->photo == null){
             $media = $film->filmUrl;
         }
