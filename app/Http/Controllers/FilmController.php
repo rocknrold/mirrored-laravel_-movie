@@ -20,7 +20,7 @@ class FilmController extends Controller
 
     public function index()
     {
-        $films = Film::orderBy('updated_at','DESC')->paginate(10);
+        $films = Film::orderBy('updated_at','DESC')->withTrashed()->paginate(10);
         return view('film.index',compact('films'));
     }
 
@@ -158,4 +158,10 @@ class FilmController extends Controller
     }
 
 
+    public function restore($id)
+    {
+        $film = new Film;
+        $film->where('id',$id)->restore();
+        return Redirect::route('film.index')->with('success','Film Restored');
+    }
 }

@@ -24,19 +24,27 @@
             <tbody>
                 @foreach ($actors as $actor)
                     <tr>
-                        <td><a href="{{ route('actor.show',$actor->id) }}">{{ $actor->name }}</a></td>
-                        <td>{{ $actor->note }}</td>
-                        <td><a href="{{ route('actor.edit', $actor->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a></td>
-                        <td>
-                            {{-- <form action="{{ route('actor.destroy',$actor->id) }}" method="POST"> --}}
-                                {!! Form::model($actor, ['route' => ['actor.destroy', $actor->id], 'method'=>'POST']) !!}
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                </button>
-                            {!! Form::close() !!}
-                        </td>
+                        @if($actor->trashed())
+                            <td data-toggle="tooltip" title="This actor is removed.">{{ $actor->name }}</td>
+                            <td>{{ $actor->note }}</td>
+                            <td>{!! Form::model($actor, ['route' => ['actor.restore', $actor->id], 'method'=>'POST']) !!}
+                                    @csrf
+                                    {!! Form::button('<i class="fa fa-undo"></i>',['type'=>'submit','class'=>' btn btn-info', 'data-toggle'=>'tooltip', 'title'=>'Click to restore actor!', 'aria-hidden'=>'true']) !!}
+                            {!! Form::close() !!}<td>
+                        @else
+                            <td><a href="{{ route('actor.show',$actor->id) }}" data-toggle="tooltip" title="View">{{ $actor->name }}</a></td>  
+                            <td>{{ $actor->note }}</td>
+                            <td><a href="{{ route('actor.edit', $actor->id) }}" class="btn btn-warning" data-toggle="tooltip" title="Edit actor"><i class="fa fa-edit"></i></a></td>
+                            <td>
+                                    {!! Form::model($actor, ['route' => ['actor.destroy', $actor->id], 'method'=>'POST']) !!}
+                                    @csrf
+                                    @method('DELETE')
+                                    {!! Form::button('<i class="fa fa-trash"></i>',['type'=>'submit','class'=>' btn btn-danger', 'data-toggle'=>'tooltip', 'title'=>'Delete actor!', 'aria-hidden'=>'true']) !!}
+                                    {!! Form::close() !!}
+                            </td>
+                            <td><a href="{{ route('actor.restore',$actor->id) }}" onclick="return false;" data-toggle="tooltip" title="Restore actor"><i class="fa fa-undo" style="font-size:24px; color:grey"></i></a>
+                            </td>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>
