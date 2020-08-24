@@ -32,3 +32,5 @@ Route::resource('actor', 'ActorController');
 Route::resource('filmUser', 'FilmUserController');
 
 Route::resource('contact','ContactController')->middleware('auth');
+
+Route::resource('role', 'RoleController');
