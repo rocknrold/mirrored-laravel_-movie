@@ -20,7 +20,7 @@ class FilmController extends Controller
 
     public function index()
     {
-        $films = Film::orderBy('updated_at','DESC')->paginate(10);
+        $films = Film::orderBy('updated_at','DESC')->withTrashed()->paginate(10);
         return view('film.index',compact('films'));
     }
 
@@ -83,20 +83,6 @@ class FilmController extends Controller
         $user_id = Auth::user()->id;
         $rating = round($comments->avg('rating'),2);
         $now = now('Asia/Manila');
-
-        // dd($comments->contains('user_id',Auth::user()->id));
-        // $comments = $comments->map(function ($comment){
-        //     return
-        // })
-
-        // dd($comments->avg('rating'));
-        // dd(array_filter($comments->toArray(),function($index){
-        //     return $index->user_id == Auth::user()->id;
-        // }));
-        // dd(in_array(Auth::user()->id,$comments->toArray()[0]));
-        // if ($comments->contains('user_id',Auth::user()->id)){
-        //     $hasComment = true;
-        // }
         return view('film.show',compact('film','comments','hasComment','rating','now'));
     }
 
@@ -157,5 +143,10 @@ class FilmController extends Controller
         return Redirect::route('film.index')->with('success','Film Deleted');
     }
 
-
+    public function restore($id)
+    {
+        $film = new Film;
+        $film->where('id',$id)->restore();
+        return Redirect::route('film.index')->with('success','Film Restored');
+    }
 }

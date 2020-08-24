@@ -44,3 +44,4 @@ class ContactController extends Controller
         return back()->withErrors($errors)->withInput($data);
     }
 }
+
