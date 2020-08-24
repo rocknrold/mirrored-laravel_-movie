@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    @if (Session::has('success'))
+    @if (session('success'))
         <div class="alert alert-success" role="alert">
             <h4 class="alert-heading"></h4>
-            <p>{{ Session::get('success') }}</p>
+            <p>{{ session('success') }}</p>
             <p class="mb-0"></p>
         </div>
     @endif
@@ -19,25 +19,33 @@
             <tr>
                 <th>Title</th>
                 <th>Story</th>
-                <th>Edit</th>
-                <th>Delete</th>
             </tr>
             </thead>
             <tbody>
                 @foreach ($films as $film)
                     <tr>
-                        <td><a href="{{ route('film.show',$film->id) }}">{{ $film->name }}</a></td>
-                        <td>{{ $film->story }}</td>
-                        <td><a href="{{ route('film.edit', $film->id) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a></td>
-                        <td>
-                            {!! Form::open(['route'=>['film.destroy',$film->id], 'method'=>'POST']) !!}
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                </button>
-                            {!! Form::close() !!}
-                        </td>
+                        @if($film->trashed())
+                            <td data-toggle="tooltip" title="This film is removed.">{{ $film->name }}</td>
+                            <td data-toggle="tooltip" title="This film is removed.">{{ $film->story }}</td>
+                            <td>
+                                {!! Form::open(['route'=>['film.restore',$film->id], 'method'=>'POST']) !!}
+                                    @csrf
+                                    {!! Form::button('<i class="fa fa-undo"></i>',['type'=>'submit','class'=>' btn btn-info', 'data-toggle'=>'tooltip', 'title'=>'Click to restore Film!', 'aria-hidden'=>'true']) !!}
+                                {!! Form::close() !!}
+                            </td>
+
+                        @else
+                            <td><a href="{{ route('film.show',$film->id) }}" data-toggle="tooltip" title="View">{{ $film->name }}</a></td>
+                            <td>{{ $film->story }}</td>
+                            <td><a href="{{ route('film.edit', $film->id) }}" class="btn btn-warning" data-toggle="tooltip" title="Edit film"><i class="fa fa-edit"></i></a></td>
+                            <td>
+                                {!! Form::open(['route'=>['film.destroy',$film->id], 'method'=>'POST']) !!}
+                                    @csrf
+                                    @method('DELETE')
+                                    {!! Form::button('<i class="fa fa-trash"></i>',['type'=>'submit','class'=>' btn btn-danger', 'data-toggle'=>'tooltip', 'title'=>'Delete Film!', 'aria-hidden'=>'true']) !!}
+                                {!! Form::close() !!}
+                            </td>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>
