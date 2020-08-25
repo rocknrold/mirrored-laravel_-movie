@@ -12,21 +12,15 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
+
+Route::get('/','HomeController@index')->name('home')->middleware('auth');;
+
+Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-
-
-Route::resource('film', 'FilmController');
+Route::resource('film', 'FilmController')->middleware('auth');
 
 Route::middleware(['direct.access'])->group(function () {
 	Route::post('/film/restore/{id}','FilmController@restore')->name('film.restore');
@@ -37,17 +31,17 @@ Route::resource('film', 'FilmController')->middleware('auth');
 
 Route::resource('contact','ContactController')->middleware('auth');
 
-Route::resource('actor', 'ActorController');
+Route::resource('actor', 'ActorController')->middleware('auth');
 
 Route::middleware(['direct.access'])->group(function () {
 	Route::post('/actor/restore/{id}','ActorController@restore')->name('actor.restore');
 	Route::get('actor/restore/{id}','ActorController@restore')->name('actor.restore');
 });
 
-Route::resource('filmUser', 'FilmUserController');
+Route::resource('filmUser', 'FilmUserController')->middleware('auth');
 
-Route::resource('genre', 'GenreController');
+Route::resource('genre', 'GenreController')->middleware('auth');
 
-Route::resource('producer', 'ProducerController');
+Route::resource('producer', 'ProducerController')->middleware('auth');
 
-Route::resource('role', 'RoleController');
+Route::resource('role', 'RoleController')->middleware('auth');

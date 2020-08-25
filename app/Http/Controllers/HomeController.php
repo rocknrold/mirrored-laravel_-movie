@@ -27,6 +27,9 @@ class HomeController extends Controller
     {
         $films = Film::with('photo')->orderBy('updated_at','DESC')->withTrashed()->paginate(10);
         $actors = Actor::with('photo')->orderBy('updated_at', 'DESC')->withTrashed()->paginate(10);
-        return view('home', compact('films','actors'));
+        $producers = Producer::orderBy('name','ASC')->paginate(10);
+        $genres = Genre::orderBy('updated_at','DESC')->paginate(10);
+        $roles = Role::orderBy('updated_at','DESC')->paginate(10);
+        return view('home', compact('films','actors','producers','genres','roles'));
     }
 }
