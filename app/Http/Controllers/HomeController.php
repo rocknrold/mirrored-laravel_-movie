@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Film;
 use App\Actor;
+use App\Producer;
+use App\Genre;
+use App\Role;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller

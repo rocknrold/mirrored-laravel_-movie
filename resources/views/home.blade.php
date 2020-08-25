@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="col-md-1-12 p-3">
-            <div class="container border border-info rounded-lg ">
+            <div class="container border border-info rounded-lg mb-3">
                 <h1>Actors</h1>
                 @include('dashboard.actor')
             </div>
@@ -21,9 +21,11 @@
                 </div>
                 <div class="col-4">
                     <h3>Genre</h3>
+                    @include('dashboard.genre')
                 </div>
                 <div class="col-4">
                     <h3>Roles</h3>
+                    @include('dashboard.role')
                 </div>
             </div>
         </div>
