@@ -4,82 +4,79 @@ namespace App\Http\Controllers;
 
 use App\Role;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Validator;
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    protected $rules = [
+        'name' => 'required|min:3|max:50'
+    ];
+
+    protected $messages = [
+        'name.required' => 'Fill out name'
+    ];
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        //
+        $roles = Role::orderBy('updated_at','DESC')->paginate(10);
+        return view("role.index", compact('roles'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('role.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        $validator = Validator::make($data,$this->rules,$this->messages);
+
+        if ($validator->passes()) {
+            $role = new Role(request(['name']));
+            $role->save();
+            return redirect('role')->with('success', 'Role Added Successfully');
+        }
+
+        $errors = $validator->messages();
+
+        return back()->withErrors($errors)->withInput($data);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Role  $role
-     * @return \Illuminate\Http\Response
-     */
     public function show(Role $role)
     {
-        //
+        return view('role.show', compact('role'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Role  $role
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Role $role)
     {
-        //
+        return view('role.edit', compact('role'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Role  $role
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Role $role)
     {
-        //
+        $data = $request->all();
+
+        $validator = Validator::make($data,$this->rules,$this->messages);
+
+        if ($validator->passes()) {
+            $role->update($data);
+            return redirect('role')->with('success', 'Role Updated Successfully');
+        }
+
+        $errors = $validator->messages();
+
+        return back()->withErrors($errors)->withInput($data);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Role  $role
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Role $role)
     {
-        //
+        $role->delete();
+        return back()->with('success', 'role Deleted');
     }
 }
