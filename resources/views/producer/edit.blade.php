@@ -42,23 +42,30 @@
         </div>
 
         <div class="form-group">
-            {!! Form::button('Add producer flms',['class'=>'btn btn-success', 'id'=>'addMore', 'type'=>'button']) !!}
+            {!! Form::button('Add more flms?',['class'=>'btn btn-success', 'id'=>'addMore', 'type'=>'button']) !!}
         </div>
+
+        <div class="form-group">
+        <table class="table table-sm ">
+            <tbody>
+                {!! Form::label('size', 'Films', ['class'=>'control-label']) !!}
+            @foreach($producer->filmProducers as $prod_films)
+                <tr class="delete_add_more_item" id="delete_add_more_item"><td>{!! Form::select('size', $films, $prod_films->film_id,
+            ['id'=>'prod_films','name'=>'prod_films[]','class'=>'form-control '.($errors->has('prod_films')? 'is-invalid':'')]) !!}</td>
+            <td><i class="fa fa-trash btn btn-danger removeaddmore form-control" aria-hidden="true" style="cursor:pointer;"></i></td>
+            </tr>
+            @endforeach
+            </tbody>
+        </table>
+        </div>
+
 
         <div class="form-group">
              <table class="table table-sm table-bordered" style="display: none;">
                 <tbody id="addRow" class="addRow">
-                    @foreach($producer->filmProducers as $prod_films)
-                        <td>{!! Form::select('size', $films, $prod_films->film_id,
-                    ['name'=>'prod_films[]','class'=>'form-control '.($errors->has('film_id')? 'is-invalid':'')]) !!}</td>
-                                <td><i class="fa fa-trash btn btn-danger removeaddmore form-control" aria-hidden="true" style="cursor:pointer;"></i></td>
-                    @endforeach
-
                 </tbody>
             </table>
         </div>
-
-
 
             {{ Form::submit('Submit',['class' => 'btn btn-success']) }}
         {!! Form::close() !!}
@@ -66,9 +73,8 @@
 
  <script id="document-template" type="text/x-handlebars-template">
   <tr class="delete_add_more_item" id="delete_add_more_item">
-
         <td>
-            {!! Form::select('size', $films, null, ['placeholder' => 'Choose films...','name'=>'prod_films[]', 'class'=>'form-control ']) !!}
+            {!! Form::select('size', $films, null,['name'=>'prod_films[]', 'class'=>'form-control ', 'id'=>'prod_films']) !!}
         </td>
         <td>
             <i class="fa fa-trash btn btn-danger removeaddmore form-control" aria-hidden="true" style="cursor:pointer;"></i>

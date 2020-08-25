@@ -25,7 +25,8 @@ class ProducerController extends Controller
         $rules = [
             'name' => 'required',
             'email' => 'required|email',
-            'website' => 'required'
+            'website' => 'required',
+            // 'prod_films' =>'required',
         ];
 
         return $rules;
@@ -37,6 +38,7 @@ class ProducerController extends Controller
             'name.required' => 'Name cannot be empty',
             'email.required' => 'Email cannot be empty',
             'website.required' => 'Website cannot be empty',
+            // 'prod_films.required' => 'Should have at least one or more films',
         ];
 
         return $messages;
@@ -81,6 +83,8 @@ class ProducerController extends Controller
     {
         $data = $request->all();
 
+        // dd($data);
+
         $validator = Validator::make($data,$this->rules(),$this->ruleMessages());
 
         if($validator->passes()){
@@ -92,14 +96,18 @@ class ProducerController extends Controller
 
             $filmproducer = Producer::find($lastinsert_id);
 
-            foreach ($request->prod_films as $id) {
-                $producer_films[] = new FilmProducer([
-                    'film_id' => $id,
-                    'producer_id' => $lastinsert_id
-                ]);
+            if(isset($request->prod_films)){
+                    // dd($request->prod_films);
+            	foreach ($request->prod_films as $id) {
+                	$producer_films[] = new FilmProducer([
+                    	'film_id' => $id,
+                    	'producer_id' => $lastinsert_id
+                	]);
+            	}
+
+                $filmproducer->filmProducers()->saveMany($producer_films);
             }
 
-            $filmproducer->filmProducers()->saveMany($producer_films);
 
             return redirect('/producer')->with('success','Producer Added Successfully');
         }
@@ -161,11 +169,15 @@ class ProducerController extends Controller
 
             FilmProducer::where('producer_id','=',$lastupdate_id)->delete();
 
-            foreach ($request->prod_films as $key) {
-                array_push($producer_films, ['film_id'=>$key,'producer_id'=>$lastupdate_id,]);
-            }
+            if(isset($request->prod_films))
+            {
+                foreach ($request->prod_films as $key)
+                {
+                    array_push($producer_films, ['film_id'=>$key,'producer_id'=>$lastupdate_id,]);
+                }
 
-            FilmProducer::insert($producer_films);
+                FilmProducer::insert($producer_films);
+            }
 
             return redirect('/producer')->with('success','Producer Updated Successfully');
         }
