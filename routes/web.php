@@ -46,8 +46,6 @@ Route::middleware(['direct.access'])->group(function () {
 
 Route::resource('filmUser', 'FilmUserController');
 
-Route::resource('contact','ContactController')->middleware('auth');
-
 Route::resource('genre', 'GenreController');
 
 Route::resource('producer', 'ProducerController');
