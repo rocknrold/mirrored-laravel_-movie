@@ -32,9 +32,32 @@ class ActorController extends Controller
         $this->middleware('auth');
     }
 
+
+    public function rules()
+    {
+        $rules = [
+            'name' => 'min:3| max:50|required',
+            'note' => 'string|max:300|required',
+        ];
+
+        return $rules;
+    }
+
+    public function rulesMessages()
+    {
+        $messages = [
+            'name.required' => 'Fill out name',
+            'name.max' => 'Maximum name limit exceeds, max of 50 characters only',
+            'note.required' => 'Fill out note',
+            'note.max' => 'Maximum note limit exceeds, max of 300 characters only',
+        ];
+
+        return $messages;
+    }
+
     public function index()
     {
-        $actors = Actor::with('photo')->orderBy('updated_at', 'DESC')->paginate(10);
+        $actors = Actor::with('photo')->orderBy('updated_at', 'DESC')->withTrashed()->paginate(10);
         return view('actor\index',compact('actors'));
     }
 
@@ -57,7 +80,7 @@ class ActorController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-
+      
         $validator = Validator::make($data,$this->rules,$this->messages);
 
         if ($validator->passes()) {
@@ -106,6 +129,7 @@ class ActorController extends Controller
     public function update(Request $request, Actor $actor)
     {
         $data = $request->all();
+      
         $validator = Validator::make($data,$this->rules,$this->messages);
 
         if ($validator->passes()) {
@@ -130,5 +154,12 @@ class ActorController extends Controller
     {
         $actor->delete();
         return Redirect::route('actor.index')->with('success', 'Actor Deleted');
+    }
+
+    public function restore($id) 
+    {
+        $actor = new Actor;
+        $actor->where('id',$id)->restore();
+        return  Redirect::route('actor.index')->with('success','Actor restored successfully!');
     }
 }

@@ -40,7 +40,7 @@ class FilmController extends Controller
 
     public function index()
     {
-        $films = Film::with('photo')->orderBy('updated_at','DESC')->paginate(10);
+        $films = Film::with('photo')->orderBy('updated_at','DESC')->withTrashed()->paginate(10);
         return view('film.index',compact('films'));
     }
 
@@ -85,10 +85,10 @@ class FilmController extends Controller
 
     public function show(Film $film)
     {
-
-        $comments = $film->filmUsers()->with(['user','photo'])->get();
+        $comments = $film->filmUsers()->with('user')->get();
         $media = asset('logo-01.jpg');
 
+        // dd($film);
         if(!$film->photo == null){
             $media = $film->filmUrl;
         }
@@ -144,5 +144,10 @@ class FilmController extends Controller
         return Redirect::route('film.index')->with('success','Film Deleted');
     }
 
-
+    public function restore($id)
+    {
+        $film = new Film;
+        $film->where('id',$id)->restore();
+        return Redirect::route('film.index')->with('success','Film Restored');
+    }
 }

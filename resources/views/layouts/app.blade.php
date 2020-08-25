@@ -18,18 +18,21 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script src="//code.jquery.com/jquery.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script> 
 </head>
 <body>
     <div id="app" class="d-flex justify-content-between flex-column vh-100">
         <nav class="navbar navbar-expand-md navbar-light bg-primary shadow-lg">
             <div class="container">
-                <a class="navbar-brand text-light" href="{{ route('film.index') }}">
-                    {{ config('app.name', 'Laravel') }}
+                <a class="navbar-brand text-light" href="{{ route('home') }}">
+                    Dashboard
                 </a>
-                <!-- Added this line for navigation to actors -->
-                <a class="navbar-brand  text-light" href="{{ route('actor.index') }}">
-                    Actor
+                <!-- Added this line for navigation to producer -->
+                <a class="navbar-brand" href="{{ route('producer.index') }}">
+                    Producer
                 </a>
                 <a class="navbar-brand  text-light" href="{{ route('role.index') }}">
                     Role
@@ -42,7 +45,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        @include('layouts.nav_menu')
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -58,7 +61,6 @@
                                 </li>
                             @endif
                         @else
-                        @include('layouts.nav_menu')
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle text-info" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -70,10 +72,11 @@
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
+                                    <a class="dropdown-item" href="{{route('contact.index')}}">Contact {{Auth::user()->is_admin ? 'User':'Admin'}}</a>
                                     <a class="dropdown-item" href="{{ route('password.request') }}" >Reset</a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    {!! Form::open(['route'=>'logout','method'=>'POST','id'=>'logout-form','style'=>'display:none;']) !!}
                                         @csrf
-                                    </form>
+                                    {!! Form::close() !!}
                                 </div>
                             </li>
                         @endguest

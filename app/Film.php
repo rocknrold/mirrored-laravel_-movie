@@ -7,10 +7,12 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\File;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Film extends Model implements HasMedia
 {
     use InteractsWithMedia;
+    use SoftDeletes;
 
     protected $fillable = [
         'name','story','released_at','duration','info','genre_id','certificate_id','media_id'
