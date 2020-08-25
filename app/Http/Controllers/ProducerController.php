@@ -92,7 +92,7 @@ class ProducerController extends Controller
 
             $filmproducer = Producer::find($lastinsert_id);
 
-            foreach ($request->prod_films as $id) { 
+            foreach ($request->prod_films as $id) {
                 $producer_films[] = new FilmProducer([
                     'film_id' => $id,
                     'producer_id' => $lastinsert_id
@@ -159,22 +159,13 @@ class ProducerController extends Controller
 
             $producer_films = [];
 
+            FilmProducer::where('producer_id','=',$lastupdate_id)->delete();
+
             foreach ($request->prod_films as $key) {
-              $data = array(                 
-                  'film_id'=>$key,
-                  'producer_id'=>$lastupdate_id,                   
-              );   
-                DB::table('film_producers')->updateOrInsert($data);
-            } 
+                array_push($producer_films, ['film_id'=>$key,'producer_id'=>$lastupdate_id,]);
+            }
 
-            // foreach ($request->prod_films as $key) {
-            //   $data = array(                 
-            //       'film_id'=>$key,
-            //       'producer_id'=>$lastupdate_id,                   
-            //   );   
-            //     $producer->filmProducers()->sync($data);
-            // }
-
+            FilmProducer::insert($producer_films);
 
             return redirect('/producer')->with('success','Producer Updated Successfully');
         }
