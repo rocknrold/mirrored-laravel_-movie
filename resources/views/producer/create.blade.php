@@ -60,7 +60,7 @@
   <tr class="delete_add_more_item" id="delete_add_more_item">
 
         <td>
-            {!! Form::select('size', $films, null, ['placeholder' => 'Choose films...','name'=>'prod_films[]', 'class'=>'form-control ']) !!}
+            {!! Form::select('size', $films, null, ['name'=>'prod_films[]', 'class'=>'form-control ']) !!}
         </td>
         <td>
             <i class="fa fa-trash btn btn-danger removeaddmore form-control" aria-hidden="true" style="cursor:pointer;"></i>
